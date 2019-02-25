@@ -7,13 +7,24 @@
 		android:layout_height="match_parent"
 		tools:context=".MainActivity">
 
-	<TextView
+	<Button
+			android:id="@+id/host_game_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Hello World!"
+			android:text="Host Game"
+			app:layout_constraintBottom_toTopOf="@id/join_game_button"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			android:layout_marginBottom="16dp"/>
+
+	<Button
+			android:id="@+id/join_game_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Join Game"
 			app:layout_constraintBottom_toBottomOf="parent"
 			app:layout_constraintLeft_toLeftOf="parent"
 			app:layout_constraintRight_toRightOf="parent"
-			app:layout_constraintTop_toTopOf="parent"/>
+			android:layout_marginBottom="16dp"/>
 
 </android.support.constraint.ConstraintLayout>
