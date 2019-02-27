@@ -27,7 +27,11 @@ class MainMenuActivity : AppCompatActivity() {
 
         binding.viewModel = mainMenuViewModel
         lifecycle.addObserver(mainMenuViewModel)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycle.removeObserver(mainMenuViewModel)
     }
 
 }
