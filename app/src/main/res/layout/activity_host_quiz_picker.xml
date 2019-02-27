@@ -5,13 +5,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".HostQuizPickerActivity">
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/darker_gray"
-            tools:listitem="@layout/recyclerview_item"/>
+    <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/recyclerview"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@android:color/darker_gray"-->
+            <!--tools:listitem="@layout/recyclerview_item"/>-->
 
 </android.support.constraint.ConstraintLayout>
