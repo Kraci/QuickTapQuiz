@@ -1,7 +1,7 @@
 package com.kraci.quicktapquiz
 
-import android.arch.lifecycle.LiveData
-import android.support.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.annotation.WorkerThread
 
 class QuizRepository(private val quizDao: QuizDao) {
 
