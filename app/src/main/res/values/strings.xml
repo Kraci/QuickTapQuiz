@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">QuickTapQuiz</string>
+    <string name="host_quiz_button">Host Quiz</string>
+    <string name="join_quiz_button">Join Quiz</string>
 </resources>
