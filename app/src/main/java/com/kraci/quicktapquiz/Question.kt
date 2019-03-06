@@ -3,8 +3,10 @@ package com.kraci.quicktapquiz
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "quizzes")
-data class Quiz(
+@Entity(tableName = "questions")
+data class Question(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val name: String)
+    val text: String,
+    val hint: String,
+    val image: String)

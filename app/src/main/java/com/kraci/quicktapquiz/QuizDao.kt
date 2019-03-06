@@ -12,10 +12,10 @@ interface QuizDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(quiz: Quiz)
 
-    @Query("SELECT * FROM quiz_table ORDER BY name ASC")
+    @Query("SELECT * FROM quizzes ORDER BY name ASC")
     fun allQuizzes(): LiveData<List<Quiz>>
 
-    @Query("DELETE FROM quiz_table")
+    @Query("DELETE FROM quizzes")
     fun deleteAll()
 
 }
