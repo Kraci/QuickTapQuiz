@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".HostQuizPickerActivity">
         </activity>
+        <activity android:name=".HostTeamsWaiting">
+        </activity>
     </application>
 
 </manifest>

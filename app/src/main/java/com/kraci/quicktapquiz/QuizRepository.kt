@@ -12,4 +12,9 @@ class QuizRepository(private val quizDao: QuizDao) {
         quizDao.insert(quiz)
     }
 
+    @WorkerThread
+    suspend fun deleteAll() {
+        quizDao.deleteAll()
+    }
+
 }

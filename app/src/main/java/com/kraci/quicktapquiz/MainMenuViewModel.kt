@@ -10,8 +10,6 @@ import androidx.lifecycle.MutableLiveData
 
 class MainMenuViewModel : ViewModel(), LifecycleObserver {
 
-//    private val activityEvent: SingleLiveEvent<Class<out AppCompatActivity>> = SingleLiveEvent()
-
     private val activityEvent: MutableLiveData<Class<out AppCompatActivity>> = MutableLiveData()
 
     fun activityEvent(): LiveData<Class<out AppCompatActivity>> {
