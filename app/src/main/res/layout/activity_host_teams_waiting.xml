@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".HostTeamsWaiting">
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".HostTeamsWaitingActivity">
 
-    <TextView
-            android:id="@+id/shittyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Some Shit"/>
+    <data>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <variable
+                name="viewModel"
+                type="com.kraci.quicktapquiz.HostTeamsWaitingViewModel"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/shittyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.defaultTextViewValue}"/>
+
+        <Button
+                android:id="@+id/start_quiz_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/start_quiz_button"
+                android:onClick="@{() -> viewModel.startQuizTapped()}"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/buttonText"
+                android:background="@drawable/rounded_corners_button"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginBottom="16dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

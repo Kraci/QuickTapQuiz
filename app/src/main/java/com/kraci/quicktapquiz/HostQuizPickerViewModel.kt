@@ -38,21 +38,16 @@ class HostQuizPickerViewModel(application: Application) : AndroidViewModel(appli
         parentJob.cancel()
     }
 
+    override fun onItemClick(quiz: Quiz) {
+        quizItemObservable.value = quiz
+    }
+
     fun insert(quiz: Quiz) = scope.launch(Dispatchers.IO) {
         repository.insert(quiz)
     }
 
     fun deleteAll() = scope.launch(Dispatchers.IO) {
         repository.deleteAll()
-    }
-
-    override fun onItemClick(quiz: Quiz) {
-        quizItemObservable.value = quiz
-    }
-
-    fun newItem() {
-        val quiz = Quiz(name="odjebe ma :-D")
-        insert(quiz)
     }
 
 }
