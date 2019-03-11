@@ -10,7 +10,14 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.IO
 import kotlinx.coroutines.experimental.launch
 
-@Database(entities = arrayOf(Quiz::class), version = 1)
+@Database(
+    entities = [
+        Quiz::class,
+        Category::class,
+        CategoryQuestion::class,
+        Question::class
+    ],
+    version = 2)
 public abstract class QuizDatabase : RoomDatabase() {
 
     abstract fun quizDao(): QuizDao
@@ -29,7 +36,7 @@ public abstract class QuizDatabase : RoomDatabase() {
                     context.applicationContext,
                     QuizDatabase::class.java,
                     "quiz_database"
-                ).addCallback(QuizDatabaseCallback(scope)).build()
+                ).fallbackToDestructiveMigration().addCallback(QuizDatabaseCallback(scope)).build()
                 INSTANCE = instance
                 return instance
             }

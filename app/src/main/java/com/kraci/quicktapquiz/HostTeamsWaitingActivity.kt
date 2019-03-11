@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.nearby.Nearby
+import com.google.android.gms.nearby.connection.*
 import com.kraci.quicktapquiz.databinding.ActivityHostTeamsWaitingBinding
 
 class HostTeamsWaitingActivity : AppCompatActivity() {
@@ -29,11 +32,12 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
         }
 
         binding.viewModel = hostTeamsWaitingViewModel
+        assert(binding.viewModel == null) {
+            println("VIEW MODEL IS NULL, CAN'T ADVERTISE!")
+        }
+        binding.viewModel?.hostQuizName = intent.getStringExtra("QuizName")
+        binding.viewModel?.startAdvertise()
         lifecycle.addObserver(hostTeamsWaitingViewModel)
-
-//        val view = findViewById<TextView>(R.id.shittyButton)
-//        view.text = intent.getStringExtra("QuizName")
-
     }
 
     override fun onDestroy() {

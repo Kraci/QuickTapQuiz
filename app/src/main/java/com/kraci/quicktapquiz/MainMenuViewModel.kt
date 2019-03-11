@@ -18,7 +18,7 @@ class MainMenuViewModel : ViewModel(), LifecycleObserver {
 
     fun activityEventAction(view: View) {
         val button = (view as Button)
-        activityEvent.value = if (button.text.equals("Host Game")) HostQuizPickerActivity::class.java else HostQuizPickerActivity::class.java
+        activityEvent.value = if (button.text.equals("Host Quiz")) HostQuizPickerActivity::class.java else JoinQuizChooseActivity::class.java
     }
 
 }

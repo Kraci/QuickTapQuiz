@@ -51,6 +51,9 @@ dependencies {
     // Coroutines
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+
+    // Nearby Connections
+    implementation 'com.google.android.gms:play-services-nearby:16.0.0'
 }
 
 kotlin {
