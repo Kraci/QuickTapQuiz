@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.*
@@ -23,20 +24,19 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_host_teams_waiting)
 
         hostTeamsWaitingViewModel = ViewModelProviders.of(this).get(HostTeamsWaitingViewModel::class.java).apply {
+
             startQuizButton.observe(this@HostTeamsWaitingActivity, Observer {
                 println(".. START CREATING BUTTON TAPPED ..")
             })
-            teamsJoined.observe(this@HostTeamsWaitingActivity, Observer {
-                println("Zoznam: $it")
-            })
+
         }
 
+        binding.hostedGames.layoutManager = LinearLayoutManager(baseContext)
+        binding.hostedGames.setHasFixedSize(true)
         binding.viewModel = hostTeamsWaitingViewModel
-        assert(binding.viewModel == null) {
-            println("VIEW MODEL IS NULL, CAN'T ADVERTISE!")
-        }
         binding.viewModel?.hostQuizName = intent.getStringExtra("QuizName")
         binding.viewModel?.startAdvertise()
+
         lifecycle.addObserver(hostTeamsWaitingViewModel)
     }
 

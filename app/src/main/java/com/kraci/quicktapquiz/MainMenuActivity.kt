@@ -21,19 +21,15 @@ class MainMenuActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         mainMenuViewModel = ViewModelProviders.of(this).get(MainMenuViewModel::class.java).apply {
-            this.activityEvent().observe(this@MainMenuActivity, Observer {
+
+            clickEvent.observe(this@MainMenuActivity, Observer {
                 val intent = Intent(this@MainMenuActivity, it)
                 startActivity(intent)
             })
+
         }
 
         binding.viewModel = mainMenuViewModel
-        lifecycle.addObserver(mainMenuViewModel)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lifecycle.removeObserver(mainMenuViewModel)
     }
 
 }

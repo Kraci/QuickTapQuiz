@@ -1,6 +1,5 @@
 package com.kraci.quicktapquiz
 
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.appcompat.app.AppCompatActivity
@@ -8,17 +7,16 @@ import android.view.View
 import android.widget.Button
 import androidx.lifecycle.MutableLiveData
 
-class MainMenuViewModel : ViewModel(), LifecycleObserver {
+class MainMenuViewModel : ViewModel() {
 
-    private val activityEvent: MutableLiveData<Class<out AppCompatActivity>> = MutableLiveData()
+    private val _clickEvent: MutableLiveData<Class<out AppCompatActivity>> = MutableLiveData()
 
-    fun activityEvent(): LiveData<Class<out AppCompatActivity>> {
-        return activityEvent
-    }
+    val clickEvent: LiveData<Class<out AppCompatActivity>>
+        get() = _clickEvent
 
-    fun activityEventAction(view: View) {
+    fun clickEventAction(view: View) {
         val button = (view as Button)
-        activityEvent.value = if (button.text.equals("Host Quiz")) HostQuizPickerActivity::class.java else JoinQuizChooseActivity::class.java
+        _clickEvent.value = if (button.text.equals("Host Quiz")) HostQuizPickerActivity::class.java else JoinQuizChooseActivity::class.java
     }
 
 }

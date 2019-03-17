@@ -1,20 +1,23 @@
 package com.kraci.quicktapquiz
 
 import android.app.Application
+import android.os.Parcelable
 import androidx.lifecycle.*
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo
 import com.google.android.gms.nearby.connection.DiscoveryOptions
 import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback
 import com.google.android.gms.nearby.connection.Strategy
+import kotlinx.android.parcel.Parcelize
 
-data class Game(val hostID: String, var teamName: String, val gameName: String)
+@Parcelize
+data class Game(val hostID: String, var teamName: String, val gameName: String) : Parcelable
 
-class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(application), JoinQuizChooseAdapter.ClickListener, LifecycleObserver {
+class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(application), JoinQuizChooseAdapter.ClickListener {
 
     val adapter = JoinQuizChooseAdapter()
 
-    private val _hostedGames: MutableLiveData<ArrayList<Game>> = MutableLiveData()
+    private val _hostedGames: MutableLiveData<List<Game>> = MutableLiveData()
     private val _hostGamePicked: MutableLiveData<Game> = MutableLiveData()
     private val _emptyNameEvent: LiveEvent<Any> = LiveEvent()
     private val _application: Application = application
@@ -22,10 +25,13 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
     init {
         adapter.clickListener = this
-        _hostedGames.value = ArrayList()
+        _hostedGames.value = mutableListOf()
+        hostedGames.observeForever {
+            adapter.hostedGames = it
+        }
     }
 
-    val hostedGames: LiveData<ArrayList<Game>>
+    val hostedGames: LiveData<List<Game>>
         get() = _hostedGames
 
     val hostGamePicked: LiveData<Game>
@@ -53,8 +59,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
         val discoveryCallback = object : EndpointDiscoveryCallback() {
 
             override fun onEndpointFound(p0: String, p1: DiscoveredEndpointInfo) {
-                // TODO: Not tested with multiple connections
-                val hostedGamesTmp = _hostedGames.value
+                val hostedGamesTmp = _hostedGames.value as? MutableList
                 val gameToAdd = Game(p0, "", p1.endpointName)
                 var gameAlreadyExist = false
 
@@ -73,9 +78,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
             }
 
             override fun onEndpointLost(p0: String) {
-                // TODO: Not tested with multiple connections
-                println("Endpoint Lost")
-                val hostedGamesTmp = _hostedGames.value
+                val hostedGamesTmp = _hostedGames.value as? MutableList
                 var gameToRemove: Game? = null
                 if (hostedGamesTmp != null) {
                     for (game in hostedGamesTmp) {
@@ -93,14 +96,14 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
         }
 
-        Nearby.getConnectionsClient(_application)
+        Nearby.getConnectionsClient(_application.applicationContext)
             .startDiscovery(
                 "com.kraci.quicktapquiz",
                 discoveryCallback,
                 discoveryOption
             )
             .addOnSuccessListener {
-                println("DISCOVERING")
+                println("DISCOVERING..")
             }
             .addOnFailureListener {
                 // TODO: pri inite zobrazit view kde pise ze hlada vytvorene hry a ak toto nastane, vypisat error

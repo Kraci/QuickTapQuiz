@@ -9,7 +9,7 @@
 	<data>
 
 		<variable
-				name="viewModel"
+                name="viewModel"
 				type="com.kraci.quicktapquiz.MainMenuViewModel"/>
 
 	</data>
@@ -21,9 +21,9 @@
 		<Button
 				android:id="@+id/host_game_button"
 				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
+				android:layout_width="0dp"
 				android:text="@string/host_quiz_button"
-				android:onClick="@{(v) -> viewModel.activityEventAction(v)}"
+				android:onClick="@{(v) -> viewModel.clickEventAction(v)}"
 				android:layout_marginStart="50dp"
 				android:layout_marginEnd="50dp"
 				android:textColor="@color/buttonText"
@@ -38,9 +38,9 @@
 		<Button
 				android:id="@+id/join_game_button"
 				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
+				android:layout_width="0dp"
 				android:text="@string/join_quiz_button"
-				android:onClick="@{(v) -> viewModel.activityEventAction(v)}"
+				android:onClick="@{(v) -> viewModel.clickEventAction(v)}"
 				android:layout_marginStart="50dp"
 				android:layout_marginEnd="50dp"
 				android:textColor="@color/buttonText"

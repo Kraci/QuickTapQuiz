@@ -2,21 +2,20 @@ package com.kraci.quicktapquiz
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.Main
 import kotlin.coroutines.experimental.CoroutineContext
 
-class HostQuizPickerViewModel(application: Application) : AndroidViewModel(application), HostQuizPickerListAdapter.ClickListener, LifecycleObserver {
+class HostQuizPickerViewModel(application: Application) : AndroidViewModel(application), HostQuizPickerListAdapter.ClickListener {
 
     val adapter = HostQuizPickerListAdapter()
-    private val quizItemObservable: MutableLiveData<Quiz> = MutableLiveData()
+    val allQuizzes: LiveData<List<Quiz>>
 
-    fun quizItemObservable(): LiveData<Quiz> {
-        return quizItemObservable
-    }
+    private val _quizItemClicked: MutableLiveData<Quiz> = MutableLiveData()
+    val quizItemClicked: LiveData<Quiz>
+        get() = _quizItemClicked
 
     private var parentJob = Job()
     private val coroutineContext: CoroutineContext
@@ -24,12 +23,14 @@ class HostQuizPickerViewModel(application: Application) : AndroidViewModel(appli
     private val scope = CoroutineScope(coroutineContext)
 
     private val repository: QuizRepository
-    val allQuizzes: LiveData<List<Quiz>>
 
     init {
         val quizzesDao = QuizDatabase.getDatabase(application, scope).quizDao()
         repository = QuizRepository(quizzesDao)
         allQuizzes = repository.allQuizzes
+        allQuizzes.observeForever {
+            adapter.quizzes = it
+        }
         adapter.clickListener = this
     }
 
@@ -39,7 +40,7 @@ class HostQuizPickerViewModel(application: Application) : AndroidViewModel(appli
     }
 
     override fun onItemClick(quiz: Quiz) {
-        quizItemObservable.value = quiz
+        _quizItemClicked.value = quiz
     }
 
     fun insert(quiz: Quiz) = scope.launch(Dispatchers.IO) {

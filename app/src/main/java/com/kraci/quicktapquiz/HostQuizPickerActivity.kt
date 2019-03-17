@@ -22,29 +22,18 @@ class HostQuizPickerActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_host_quiz_picker)
 
         hostQuizPickerViewModel = ViewModelProviders.of(this).get(HostQuizPickerViewModel::class.java).apply {
-            this.quizItemObservable().observe(this@HostQuizPickerActivity, Observer {
+
+            quizItemClicked.observe(this@HostQuizPickerActivity, Observer {
                 val intent = Intent(this@HostQuizPickerActivity, HostTeamsWaitingActivity::class.java)
                 intent.putExtra("QuizName", it.name)
                 startActivity(intent)
             })
-            this.allQuizzes.observe(this@HostQuizPickerActivity, Observer {
-                adapter.quizzes = it
-            })
+
         }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(baseContext)
         binding.recyclerView.setHasFixedSize(true)
-        // preto toto nedat sem? aka je vyhoda ze to je v xml a preco to je vlastne vo view modely
-        // binding.recyclerView.adapter = hostQuizPickerViewModel.adapter
         binding.viewModel = hostQuizPickerViewModel
-
-        lifecycle.addObserver(hostQuizPickerViewModel)
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lifecycle.removeObserver(hostQuizPickerViewModel)
     }
 
 }

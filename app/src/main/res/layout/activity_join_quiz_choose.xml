@@ -33,7 +33,7 @@
             android:hint="@string/team_name_hint"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hostedGames"
+            android:id="@+id/hosted_games"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -43,13 +43,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:setAdapter="@{viewModel.adapter}"
             tools:listitem="@layout/recyclerview_item"/>
-
-        <!--<Button-->
-            <!--android:id="@+id/hosted_game"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Hosted game"/>-->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".HostTeamsWaitingActivity">
+        tools:context=".JoinTeamsWaitingActivity">
 
     <data>
 
         <variable
                 name="viewModel"
-                type="com.kraci.quicktapquiz.HostTeamsWaitingViewModel"/>
+                type="com.kraci.quicktapquiz.JoinTeamsWaitingViewModel"/>
 
     </data>
 
@@ -18,30 +19,30 @@
             android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/hosted_games"
+                android:id="@+id/joined_teams"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="20dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/start_quiz_button"
+                app:layout_constraintBottom_toTopOf="@+id/ready_button"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:setAdapter="@{viewModel.adapter}"
                 tools:listitem="@layout/recyclerview_item_check"/>
 
         <Button
-                android:id="@+id/start_quiz_button"
+                android:id="@+id/ready_button"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="@string/start_quiz_button"
-                android:onClick="@{() -> viewModel.startQuizTapped()}"
+                android:text="@string/team_ready"
+                android:onClick="@{() -> viewModel.readyButtonClicked()}"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:textColor="@color/buttonText"
-                android:background="@{viewModel.startQuizButtonShouldBeActive ? @drawable/rounded_corners_button : @drawable/rounded_corners_button_disabled}"
-                android:enabled="@{viewModel.startQuizButtonShouldBeActive}"
+                android:background="@{viewModel.readyButtonShouldBeActive ? @drawable/rounded_corners_button : @drawable/rounded_corners_button_disabled}"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:enabled="@{viewModel.readyButtonShouldBeActive}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

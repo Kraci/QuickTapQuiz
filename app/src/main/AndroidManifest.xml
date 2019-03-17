@@ -29,6 +29,8 @@
         </activity>
         <activity android:name=".JoinQuizChooseActivity">
         </activity>
+        <activity android:name=".JoinTeamsWaitingActivity">
+        </activity>
     </application>
 
 </manifest>

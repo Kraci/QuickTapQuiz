@@ -4,6 +4,7 @@
 	<color name="colorPrimaryDark">#002D72</color>
 	<color name="colorAccent">#D81B60</color>
 	<color name="primaryButton">#0D47A1</color>
+	<color name="primaryButtonDisabled">#979797</color>
 	<color name="buttonText">#FFFFFF</color>
 	<color name="cellBackground">#1565C0</color>
 	<color name="cellText">#FFFFFF</color>
