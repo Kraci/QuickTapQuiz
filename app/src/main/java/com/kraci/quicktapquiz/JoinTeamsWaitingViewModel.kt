@@ -1,42 +1,54 @@
 package com.kraci.quicktapquiz
 
 import android.app.Application
-import androidx.databinding.ObservableField
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.nearby.Nearby
-import com.google.android.gms.nearby.connection.*
-import kotlin.text.Charsets.UTF_8
+import androidx.lifecycle.*
 
-class JoinTeamsWaitingViewModel(application: Application) : AndroidViewModel(application) {
+class JoinTeamsWaitingViewModelFactory(private val application: Application, private val param: Game) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return JoinTeamsWaitingViewModel(application, param) as T
+    }
+}
 
-    val adapter = HostTeamsWaitingListAdapter()
-    val readyButtonShouldBeActive = ObservableField(false)
+class JoinTeamsWaitingViewModel(application: Application, param: Game) : AndroidViewModel(application) {
 
     private val _teamsJoined: MutableLiveData<List<Team>> = MutableLiveData()
-    private val _application = application
+    private val connectionManager = JoinConnectionManager.getInstance(application)
+    private val _readyButtonShouldBeActive: MutableLiveData<Boolean> = MutableLiveData(true)
+    private val hostGame = param
+
+    val adapter = HostTeamsWaitingListAdapter()
+    val readyButtonShouldBeActive: LiveData<Boolean>
+        get() = _readyButtonShouldBeActive
 
     val teamsJoined: LiveData<List<Team>>
         get() = _teamsJoined
 
-    var hostGame: Game? = null
-        set(value) {
-            if (value != null) {
-                field = value
-                requestConnectionFor(value)
-            }
-        }
-
     private var hostID = ""
         set(value) {
             field = value
-            if (value == hostGame?.hostID) {
-                readyButtonShouldBeActive.set(true)
+            if (value == hostGame.hostID) {
+                _readyButtonShouldBeActive.value = true
             }
         }
 
+    val joinCallback = object : JoinConnectionManager.JoinConnectionCallback {
+
+        override fun onConnectionSuccessful(host: String) {
+            hostID = host
+        }
+
+        override fun onMessageReceived(host: String, message: String) {
+            _teamsJoined.value = parseTeamsFrom(message)
+        }
+
+        override fun onDisconnected(host: String) { }
+
+    }
+
     init {
+        connectionManager.registerCallback(joinCallback)
+        requestConnectionFor(hostGame)
+
         _teamsJoined.value = mutableListOf()
         teamsJoined.observeForever {
             adapter.teams = it
@@ -44,9 +56,8 @@ class JoinTeamsWaitingViewModel(application: Application) : AndroidViewModel(app
     }
 
     fun readyButtonClicked() {
-        readyButtonShouldBeActive.set(false)
-        Nearby.getConnectionsClient(_application.applicationContext)
-            .sendPayload(hostID, Payload.fromBytes("READY".toByteArray(UTF_8)))
+        _readyButtonShouldBeActive.value = false
+        connectionManager.sendMessage(hostID, "READY")
     }
 
     fun parseTeamsFrom(message: String): List<Team> {
@@ -60,49 +71,13 @@ class JoinTeamsWaitingViewModel(application: Application) : AndroidViewModel(app
         return teams
     }
 
-    fun requestConnectionFor(game: Game) {
+    private fun requestConnectionFor(game: Game) {
+        connectionManager.requestConnection(game.hostID, game.teamName)
+    }
 
-        val payloadCallback = object : PayloadCallback() {
-
-            override fun onPayloadReceived(p0: String, p1: Payload) {
-                p1.asBytes()?.let {
-                    val message = String(it, UTF_8)
-                    _teamsJoined.value = parseTeamsFrom(message)
-                }
-            }
-
-            override fun onPayloadTransferUpdate(p0: String, p1: PayloadTransferUpdate) { }
-
-        }
-
-        val connectionLifecycleCallback = object : ConnectionLifecycleCallback() {
-
-            override fun onConnectionInitiated(p0: String, p1: ConnectionInfo) {
-                Nearby.getConnectionsClient(_application.applicationContext)
-                    .acceptConnection(p0, payloadCallback)
-            }
-
-            override fun onConnectionResult(p0: String, p1: ConnectionResolution) {
-                when (p1.status.statusCode) {
-                    ConnectionsStatusCodes.STATUS_OK -> hostID = p0
-                    ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED -> println("STATUS: REJECTED")
-                    ConnectionsStatusCodes.STATUS_ERROR -> println("STATUS: ERROR")
-                }
-            }
-
-            override fun onDisconnected(p0: String) {
-                println("STATUS: onDisconnected")
-            }
-
-        }
-
-        Nearby.getConnectionsClient(_application.applicationContext)
-            .requestConnection(
-                game.teamName,
-                game.hostID,
-                connectionLifecycleCallback
-            )
-
+    override fun onCleared() {
+        super.onCleared()
+        connectionManager.unregisterCallback(joinCallback)
     }
 
 }

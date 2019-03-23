@@ -39,7 +39,12 @@ class JoinQuizChooseActivity : AppCompatActivity() {
         binding.hostedGames.layoutManager = LinearLayoutManager(baseContext)
         binding.hostedGames.setHasFixedSize(true)
         binding.viewModel = joinQuizChooseViewModel
-        binding.viewModel?.startDiscovery()
     }
+
+//    override fun onBackPressed() {
+//        super.onBackPressed()
+//        TODO: pri navrate potrebujem zavolat stopDiscovery, potom znova pri startDiscovery najdem vsetkych
+//        joinQuizChooseViewModel.connectionManager.stopDiscovery()
+//    }
 
 }

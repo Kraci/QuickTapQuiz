@@ -23,7 +23,7 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_host_teams_waiting)
 
-        hostTeamsWaitingViewModel = ViewModelProviders.of(this).get(HostTeamsWaitingViewModel::class.java).apply {
+        hostTeamsWaitingViewModel = ViewModelProviders.of(this, HostTeamsWaitingViewModelFactory(application, intent.getStringExtra("QuizName"))).get(HostTeamsWaitingViewModel::class.java).apply {
 
             startQuizButton.observe(this@HostTeamsWaitingActivity, Observer {
                 println(".. START CREATING BUTTON TAPPED ..")
@@ -31,18 +31,10 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
 
         }
 
+        binding.setLifecycleOwner(this)
         binding.hostedGames.layoutManager = LinearLayoutManager(baseContext)
         binding.hostedGames.setHasFixedSize(true)
         binding.viewModel = hostTeamsWaitingViewModel
-        binding.viewModel?.hostQuizName = intent.getStringExtra("QuizName")
-        binding.viewModel?.startAdvertise()
-
-        lifecycle.addObserver(hostTeamsWaitingViewModel)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        lifecycle.removeObserver(hostTeamsWaitingViewModel)
     }
 
 }

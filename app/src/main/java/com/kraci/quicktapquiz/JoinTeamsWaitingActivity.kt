@@ -21,13 +21,12 @@ class JoinTeamsWaitingActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_join_teams_waiting)
 
-        joinTeamsWaitingViewModel = ViewModelProviders.of(this).get(JoinTeamsWaitingViewModel::class.java)
+        joinTeamsWaitingViewModel = ViewModelProviders.of(this, JoinTeamsWaitingViewModelFactory(application, intent.getParcelableExtra("QuizGame"))).get(JoinTeamsWaitingViewModel::class.java)
 
+        binding.setLifecycleOwner(this)
         binding.joinedTeams.layoutManager = LinearLayoutManager(baseContext)
         binding.joinedTeams.setHasFixedSize(true)
         binding.viewModel = joinTeamsWaitingViewModel
-        binding.viewModel?.hostGame = intent.getParcelableExtra("QuizGame")
-
     }
 
 }
