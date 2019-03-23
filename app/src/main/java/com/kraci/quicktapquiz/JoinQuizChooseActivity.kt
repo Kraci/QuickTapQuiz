@@ -41,10 +41,9 @@ class JoinQuizChooseActivity : AppCompatActivity() {
         binding.viewModel = joinQuizChooseViewModel
     }
 
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        TODO: pri navrate potrebujem zavolat stopDiscovery, potom znova pri startDiscovery najdem vsetkych
-//        joinQuizChooseViewModel.connectionManager.stopDiscovery()
-//    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        joinQuizChooseViewModel.stopDiscovery()
+    }
 
 }

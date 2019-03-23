@@ -87,6 +87,10 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
         teamName = s.toString()
     }
 
+    fun stopDiscovery() {
+        connectionManager.stopDiscovery()
+    }
+
     override fun onItemClick(hostedGame: Game) {
         if (teamName.isEmpty()) {
             _emptyNameEvent.call()
