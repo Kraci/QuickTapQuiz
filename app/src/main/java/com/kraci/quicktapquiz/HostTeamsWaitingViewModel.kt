@@ -40,7 +40,6 @@ class HostTeamsWaitingViewModel(application: Application, param: String) : Andro
 
         override fun onPayloadReceived(client: String, message: String) {
             if (message == "READY") {
-                println("READY MESSAGE")
                 val teams = _teamsJoined.value
                 if (teams != null) {
                     for (team in teams) {
@@ -115,6 +114,9 @@ class HostTeamsWaitingViewModel(application: Application, param: String) : Andro
                     break
                 }
             }
+            if (it.isEmpty()) {
+                allAreReady = false
+            }
             _startQuizButtonShouldBeActive.value = allAreReady
 
             var data = ""
@@ -133,12 +135,15 @@ class HostTeamsWaitingViewModel(application: Application, param: String) : Andro
     }
 
     fun startQuizTapped() {
+        val clients = mutableListOf<String>()
+        val teams = _teamsJoined.value
+        teams?.forEach { team -> clients.add(team.deviceID) }
+        connectionManager.sendMessage(clients, "START")
         _startQuizButton.call()
     }
 
     override fun onCleared() {
         super.onCleared()
-        println("VIEW MODEL PREC")
         connectionManager.unregisterCallback(callback)
     }
 

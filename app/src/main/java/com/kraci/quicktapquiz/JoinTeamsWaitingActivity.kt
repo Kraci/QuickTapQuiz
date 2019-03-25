@@ -1,5 +1,6 @@
 package com.kraci.quicktapquiz
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -21,7 +22,16 @@ class JoinTeamsWaitingActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_join_teams_waiting)
 
-        joinTeamsWaitingViewModel = ViewModelProviders.of(this, JoinTeamsWaitingViewModelFactory(application, intent.getParcelableExtra("QuizGame"))).get(JoinTeamsWaitingViewModel::class.java)
+        joinTeamsWaitingViewModel = ViewModelProviders.of(this, JoinTeamsWaitingViewModelFactory(application, intent.getParcelableExtra("QuizGame"))).get(JoinTeamsWaitingViewModel::class.java).apply {
+
+            startQuizEvent.observe(this@JoinTeamsWaitingActivity, Observer {
+                val intent = Intent(this@JoinTeamsWaitingActivity, JoinPlayActivity::class.java)
+                intent.putExtra("QuizGame", it)
+                startActivity(intent)
+                finish()
+            })
+
+        }
 
         binding.setLifecycleOwner(this)
         binding.joinedTeams.layoutManager = LinearLayoutManager(baseContext)

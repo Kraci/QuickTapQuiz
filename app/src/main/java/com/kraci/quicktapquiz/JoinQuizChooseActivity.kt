@@ -28,6 +28,7 @@ class JoinQuizChooseActivity : AppCompatActivity() {
                 val intent = Intent(this@JoinQuizChooseActivity, JoinTeamsWaitingActivity::class.java)
                 intent.putExtra("QuizGame", it)
                 startActivity(intent)
+                finish()
             })
 
             emptyNameEvent.observe(this@JoinQuizChooseActivity, Observer {
@@ -39,11 +40,6 @@ class JoinQuizChooseActivity : AppCompatActivity() {
         binding.hostedGames.layoutManager = LinearLayoutManager(baseContext)
         binding.hostedGames.setHasFixedSize(true)
         binding.viewModel = joinQuizChooseViewModel
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        joinQuizChooseViewModel.stopDiscovery()
     }
 
 }

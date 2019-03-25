@@ -65,6 +65,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
     init {
         connectionManager.registerCallback(joinConnectionCallback)
+        connectionManager.stopDiscovery()
         connectionManager.startDiscovery()
 
         adapter.clickListener = this
@@ -85,10 +86,6 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
     fun onTeamNameChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         teamName = s.toString()
-    }
-
-    fun stopDiscovery() {
-        connectionManager.stopDiscovery()
     }
 
     override fun onItemClick(hostedGame: Game) {

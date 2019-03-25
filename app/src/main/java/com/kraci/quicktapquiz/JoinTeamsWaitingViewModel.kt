@@ -12,16 +12,21 @@ class JoinTeamsWaitingViewModelFactory(private val application: Application, pri
 class JoinTeamsWaitingViewModel(application: Application, param: Game) : AndroidViewModel(application) {
 
     private val _teamsJoined: MutableLiveData<List<Team>> = MutableLiveData()
+    private val _readyButtonShouldBeActive: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _startQuizEvent: MutableLiveData<Game> = MutableLiveData()
     private val connectionManager = JoinConnectionManager.getInstance(application)
-    private val _readyButtonShouldBeActive: MutableLiveData<Boolean> = MutableLiveData(true)
     private val hostGame = param
 
     val adapter = HostTeamsWaitingListAdapter()
+
     val readyButtonShouldBeActive: LiveData<Boolean>
         get() = _readyButtonShouldBeActive
 
     val teamsJoined: LiveData<List<Team>>
         get() = _teamsJoined
+
+    val startQuizEvent: LiveData<Game>
+        get() = _startQuizEvent
 
     private var hostID = ""
         set(value) {
@@ -35,10 +40,15 @@ class JoinTeamsWaitingViewModel(application: Application, param: Game) : Android
 
         override fun onConnectionSuccessful(host: String) {
             hostID = host
+            _readyButtonShouldBeActive.value = true
         }
 
         override fun onMessageReceived(host: String, message: String) {
-            _teamsJoined.value = parseTeamsFrom(message)
+            if (message == "START") {
+                _startQuizEvent.value = hostGame
+            } else {
+                _teamsJoined.value = parseTeamsFrom(message)
+            }
         }
 
         override fun onDisconnected(host: String) { }
@@ -65,6 +75,7 @@ class JoinTeamsWaitingViewModel(application: Application, param: Game) : Android
         val splittedMessage = message.split(";")
         for (team in splittedMessage) {
             val splittedTeam = team.split(",")
+            if (splittedTeam.count() != 3) { continue }
             val teamIsReady = (splittedTeam[2] == "true")
             teams.add(Team(splittedTeam[0], splittedTeam[1], teamIsReady))
         }

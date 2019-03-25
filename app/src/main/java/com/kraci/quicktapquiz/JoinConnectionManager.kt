@@ -31,9 +31,9 @@ class JoinConnectionManager {
         private val joinCallbacks: MutableSet<JoinConnectionCallback> = mutableSetOf()
 
         fun getInstance(application: Application): JoinConnectionManager =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: createClient(application).also { INSTANCE = it }
-                }
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: createClient(application).also { INSTANCE = it }
+            }
 
         private fun createClient(application: Application): JoinConnectionManager {
             connectionClient = Nearby.getConnectionsClient(application.applicationContext)
