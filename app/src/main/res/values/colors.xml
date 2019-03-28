@@ -7,5 +7,6 @@
 	<color name="primaryButtonDisabled">#979797</color>
 	<color name="buttonText">#FFFFFF</color>
 	<color name="cellBackground">#1565C0</color>
+	<color name="cellBackgroundDarker">#002D72</color>
 	<color name="cellText">#FFFFFF</color>
 </resources>

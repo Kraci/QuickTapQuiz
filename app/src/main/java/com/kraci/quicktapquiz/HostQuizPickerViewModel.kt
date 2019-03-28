@@ -21,12 +21,11 @@ class HostQuizPickerViewModel(application: Application) : AndroidViewModel(appli
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Main
     private val scope = CoroutineScope(coroutineContext)
-
     private val repository: QuizRepository
 
     init {
-        val quizzesDao = QuizDatabase.getDatabase(application, scope).quizDao()
-        repository = QuizRepository(quizzesDao)
+        val db = QuizDatabase.getDatabase(application, scope)
+        repository = QuizRepository(db.quizDao(), db.categoryDao(), db.questionDao(), db.categoryQuestionDao(), db.quizGameDao())
         allQuizzes = repository.allQuizzes
         allQuizzes.observeForever {
             adapter.quizzes = it

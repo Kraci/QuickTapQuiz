@@ -5,12 +5,12 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface CategoryQuestionDao {
+interface QuestionDao {
 
     @Insert
-    fun insert(categoryQuestion: CategoryQuestion)
+    fun insert(question: Question): Long
 
-    @Query("DELETE FROM category_question")
+    @Query("DELETE FROM questions")
     fun deleteAll()
 
 }

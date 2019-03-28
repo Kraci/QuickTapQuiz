@@ -10,7 +10,7 @@ import androidx.room.Query
 interface QuizDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(quiz: Quiz)
+    fun insert(quiz: Quiz): Long
 
     @Query("SELECT * FROM quizzes ORDER BY name ASC")
     fun allQuizzes(): LiveData<List<Quiz>>

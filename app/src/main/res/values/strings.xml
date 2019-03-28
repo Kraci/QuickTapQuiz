@@ -5,4 +5,5 @@
     <string name="start_quiz_button">Start Quiz</string>
     <string name="team_name_hint">Your Team Name</string>
     <string name="team_ready">Ready</string>
+    <string name="answer">Answer!</string>
 </resources>
