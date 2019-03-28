@@ -3,17 +3,17 @@ package com.kraci.quicktapquiz
 import android.app.Application
 import androidx.lifecycle.*
 
-class JoinTeamsWaitingViewModelFactory(private val application: Application, private val param: Game) : ViewModelProvider.Factory {
+class JoinTeamsWaitingViewModelFactory(private val application: Application, private val param: HostedGame) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return JoinTeamsWaitingViewModel(application, param) as T
     }
 }
 
-class JoinTeamsWaitingViewModel(application: Application, param: Game) : AndroidViewModel(application) {
+class JoinTeamsWaitingViewModel(application: Application, param: HostedGame) : AndroidViewModel(application) {
 
     private val _teamsJoined: MutableLiveData<List<Team>> = MutableLiveData()
     private val _readyButtonShouldBeActive: MutableLiveData<Boolean> = MutableLiveData(false)
-    private val _startQuizEvent: MutableLiveData<Game> = MutableLiveData()
+    private val _startQuizEvent: MutableLiveData<HostedGame> = MutableLiveData()
     private val connectionManager = JoinConnectionManager.getInstance(application)
     private val hostGame = param
 
@@ -25,7 +25,7 @@ class JoinTeamsWaitingViewModel(application: Application, param: Game) : Android
     val teamsJoined: LiveData<List<Team>>
         get() = _teamsJoined
 
-    val startQuizEvent: LiveData<Game>
+    val startQuizEvent: LiveData<HostedGame>
         get() = _startQuizEvent
 
     private var hostID = ""
@@ -82,8 +82,8 @@ class JoinTeamsWaitingViewModel(application: Application, param: Game) : Android
         return teams
     }
 
-    private fun requestConnectionFor(game: Game) {
-        connectionManager.requestConnection(game.hostID, game.teamName)
+    private fun requestConnectionFor(hostedGame: HostedGame) {
+        connectionManager.requestConnection(hostedGame.hostID, hostedGame.teamName)
     }
 
     override fun onCleared() {

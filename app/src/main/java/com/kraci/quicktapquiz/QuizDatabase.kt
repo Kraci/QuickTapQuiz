@@ -21,6 +21,10 @@ import kotlinx.coroutines.experimental.launch
 public abstract class QuizDatabase : RoomDatabase() {
 
     abstract fun quizDao(): QuizDao
+    abstract fun categoryDao(): CategoryDao
+    abstract fun questionDao(): QuestionDao
+    abstract fun categoryQuestionDao(): CategoryQuestionDao
+    abstract fun quizGameDao(): QuizGameDao
 
     companion object {
         @Volatile
@@ -49,7 +53,7 @@ public abstract class QuizDatabase : RoomDatabase() {
             super.onOpen(db)
             INSTANCE?.let { database ->
                 scope.launch(Dispatchers.IO) {
-                    populateDatabase(database.quizDao())
+                    populateDatabase(database.quizDao(), database.categoryDao(), database.questionDao(), database.categoryQuestionDao())
                 }
             }
         }
@@ -63,15 +67,141 @@ public abstract class QuizDatabase : RoomDatabase() {
 //            }
 //        }
 
-        fun populateDatabase(quizDao: QuizDao) {
+        fun populateDatabase(quizDao: QuizDao, categoryDao: CategoryDao, questionDao: QuestionDao, categoryQuestionDao: CategoryQuestionDao) {
+            categoryQuestionDao.deleteAll()
+            questionDao.deleteAll()
+            categoryDao.deleteAll()
             quizDao.deleteAll()
 
             var quiz = Quiz(name = "USA Geographic")
-            quizDao.insert(quiz)
+            var quizID = quizDao.insert(quiz)
+
+            var category = Category(name = "Mountains", quizId = quizID.toInt())
+            var categoryID = categoryDao.insert(category)
+
+            var question = Question(text = "Mountain 1", hint = "hint1", image = "image1")
+            var questionID = questionDao.insert(question)
+            var categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 500, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Mountain 2", hint = "hint12", image = "image12")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Mountain 3", hint = "hint13", image = "image13")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 2000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Mountain 4", hint = "hint14", image = "image14")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            category = Category(name = "Rivers", quizId = quizID.toInt())
+            categoryID = categoryDao.insert(category)
+
+            question = Question(text = "River 1", hint = "hint21", image = "image21")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 500, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "River 2", hint = "hint22", image = "image22")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "River 3", hint = "hint23", image = "image23")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 2000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "River 4", hint = "hint24", image = "image24")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            category = Category(name = "Cities", quizId = quizID.toInt())
+            categoryID = categoryDao.insert(category)
+
+            question = Question(text = "City 1", hint = "hint31", image = "image31")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 500, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "City 2", hint = "hint32", image = "image32")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "City 3", hint = "hint33", image = "image33")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 2000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "City 4", hint = "hint34", image = "image34")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            category = Category(name = "Buildings", quizId = quizID.toInt())
+            categoryID = categoryDao.insert(category)
+
+            question = Question(text = "Building 1", hint = "hint41", image = "image41")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 500, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Building 2", hint = "hint42", image = "image42")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Building 3", hint = "hint43", image = "image43")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 2000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Building 4", hint = "hint44", image = "image44")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
             quiz = Quiz(name = "Elementary Math")
-            quizDao.insert(quiz)
+            quizID = quizDao.insert(quiz)
+
+            category = Category(name = "Category5", quizId = quizID.toInt())
+            categoryID = categoryDao.insert(category)
+
+            question = Question(text = "Question51", hint = "hint51", image = "image51")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 300, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Question52", hint = "hint52", image = "image52")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 600, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            category = Category(name = "Category6", quizId = quizID.toInt())
+            categoryID = categoryDao.insert(category)
+
+            question = Question(text = "Question61", hint = "hint61", image = "image61")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
             quiz = Quiz(name = "Canada National Parks")
-            quizDao.insert(quiz)
+            quizID = quizDao.insert(quiz)
+
+            category = Category(name = "Category7", quizId = quizID.toInt())
+            categoryID = categoryDao.insert(category)
+
+            question = Question(text = "Question71", hint = "hint71", image = "image71")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1, false)
+            categoryQuestionDao.insert(categoryQuestion)
         }
 
     }

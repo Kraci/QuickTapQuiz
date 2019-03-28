@@ -1,14 +1,13 @@
 package com.kraci.quicktapquiz
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.nearby.Nearby
-import com.google.android.gms.nearby.connection.*
 import com.kraci.quicktapquiz.databinding.ActivityHostTeamsWaitingBinding
 
 class HostTeamsWaitingActivity : AppCompatActivity() {
@@ -23,10 +22,16 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_host_teams_waiting)
 
-        hostTeamsWaitingViewModel = ViewModelProviders.of(this, HostTeamsWaitingViewModelFactory(application, intent.getStringExtra("QuizName"))).get(HostTeamsWaitingViewModel::class.java).apply {
+        hostTeamsWaitingViewModel = ViewModelProviders.of(this, HostTeamsWaitingViewModelFactory(application, intent.getParcelableExtra<QuizInfo>("QuizInfo"))).get(HostTeamsWaitingViewModel::class.java).apply {
 
             startQuizButton.observe(this@HostTeamsWaitingActivity, Observer {
-                println(".. START CREATING BUTTON TAPPED ..")
+                if (quizGame == null) {
+                    Toast.makeText(baseContext, "Quiz is not valid.", Toast.LENGTH_LONG).show()
+                } else {
+                    val intent = Intent(this@HostTeamsWaitingActivity, HostPlayQuestionsActivity::class.java)
+                    intent.putExtra("QuizGame", quizGame)
+                    startActivity(intent)
+                }
             })
 
         }

@@ -9,9 +9,9 @@ import androidx.room.Query
 interface CategoryDao {
 
     @Insert
-    fun insert(category: Category)
+    fun insert(category: Category): Long
 
-    @Query("SELECT * FROM categories WHERE quiz_id = :quizId")
-    fun findCategoriesForQuiz(quizId: Int): LiveData<List<Category>>
+    @Query("DELETE FROM categories")
+    fun deleteAll()
 
 }

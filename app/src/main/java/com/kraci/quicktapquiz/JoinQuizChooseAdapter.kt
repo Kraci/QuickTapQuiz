@@ -8,14 +8,14 @@ import com.kraci.quicktapquiz.databinding.RecyclerviewItemBinding
 class JoinQuizChooseAdapter : RecyclerView.Adapter<JoinQuizChooseAdapter.JoinQuizPickerViewHolder>() {
 
     var clickListener: ClickListener? = null
-    var hostedGames: List<Game> = mutableListOf()
+    var hostedGames: List<HostedGame> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
     interface ClickListener {
-        fun onItemClick(hostedGame: Game)
+        fun onItemClick(hostedGame: HostedGame)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JoinQuizPickerViewHolder {
@@ -35,7 +35,7 @@ class JoinQuizChooseAdapter : RecyclerView.Adapter<JoinQuizChooseAdapter.JoinQui
             binding.root.setOnClickListener { clickListener?.onItemClick(hostedGames[adapterPosition]) }
         }
 
-        fun update(hostedGame: Game) {
+        fun update(hostedGame: HostedGame) {
             binding.textView.text = hostedGame.gameName
         }
 

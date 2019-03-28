@@ -33,6 +33,8 @@
         </activity>
         <activity android:name=".JoinPlayActivity">
         </activity>
+        <activity android:name=".HostPlayQuestionsActivity">
+        </activity>
     </application>
 
 </manifest>

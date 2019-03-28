@@ -3,22 +3,18 @@ package com.kraci.quicktapquiz
 import android.app.Application
 import android.os.Parcelable
 import androidx.lifecycle.*
-import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo
-import com.google.android.gms.nearby.connection.DiscoveryOptions
-import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback
-import com.google.android.gms.nearby.connection.Strategy
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Game(val hostID: String, var teamName: String, val gameName: String) : Parcelable
+data class HostedGame(val hostID: String, var teamName: String, val gameName: String) : Parcelable
 
 class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(application), JoinQuizChooseAdapter.ClickListener {
 
     val adapter = JoinQuizChooseAdapter()
 
-    private val _hostedGames: MutableLiveData<List<Game>> = MutableLiveData()
-    private val _hostGamePicked: MutableLiveData<Game> = MutableLiveData()
+    private val _hostedGames: MutableLiveData<List<HostedGame>> = MutableLiveData()
+    private val _hostGamePicked: MutableLiveData<HostedGame> = MutableLiveData()
     private val _emptyNameEvent: LiveEvent<Any> = LiveEvent()
     private val connectionManager = JoinConnectionManager.getInstance(application)
     private var teamName = ""
@@ -27,7 +23,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
         override fun onEndpointFound(host: String, endpointInfo: DiscoveredEndpointInfo) {
             val hostedGamesTmp = _hostedGames.value as? MutableList
-            val gameToAdd = Game(host, "", endpointInfo.endpointName)
+            val gameToAdd = HostedGame(host, "", endpointInfo.endpointName)
             var gameAlreadyExist = false
 
             if (hostedGamesTmp != null) {
@@ -46,16 +42,16 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
         override fun onEndpointLost(host: String) {
             val hostedGamesTmp = _hostedGames.value as? MutableList
-            var gameToRemove: Game? = null
+            var hostedGameToRemove: HostedGame? = null
             if (hostedGamesTmp != null) {
                 for (game in hostedGamesTmp) {
                     if (game.hostID == host) {
-                        gameToRemove = game
+                        hostedGameToRemove = game
                         break
                     }
                 }
-                if (gameToRemove != null) {
-                    hostedGamesTmp.remove(gameToRemove)
+                if (hostedGameToRemove != null) {
+                    hostedGamesTmp.remove(hostedGameToRemove)
                     _hostedGames.value = hostedGamesTmp
                 }
             }
@@ -75,10 +71,10 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    val hostedGames: LiveData<List<Game>>
+    val hostedGames: LiveData<List<HostedGame>>
         get() = _hostedGames
 
-    val hostGamePicked: LiveData<Game>
+    val hostGamePicked: LiveData<HostedGame>
         get() = _hostGamePicked
 
     val emptyNameEvent: LiveData<Any>
@@ -88,7 +84,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
         teamName = s.toString()
     }
 
-    override fun onItemClick(hostedGame: Game) {
+    override fun onItemClick(hostedGame: HostedGame) {
         if (teamName.isEmpty()) {
             _emptyNameEvent.call()
             return
@@ -99,6 +95,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
     override fun onCleared() {
         super.onCleared()
+        println("QUIZ CHOOSE onCleared VM CALL")
         connectionManager.unregisterCallback(joinConnectionCallback)
     }
 

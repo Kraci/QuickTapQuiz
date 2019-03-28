@@ -3,11 +3,16 @@ package com.kraci.quicktapquiz
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kraci.quicktapquiz.databinding.ActivityHostQuizPickerBinding
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class QuizInfo(val id: Int, val name: String) : Parcelable
 
 class HostQuizPickerActivity : AppCompatActivity() {
 
@@ -24,9 +29,12 @@ class HostQuizPickerActivity : AppCompatActivity() {
         hostQuizPickerViewModel = ViewModelProviders.of(this).get(HostQuizPickerViewModel::class.java).apply {
 
             quizItemClicked.observe(this@HostQuizPickerActivity, Observer {
-                val intent = Intent(this@HostQuizPickerActivity, HostTeamsWaitingActivity::class.java)
-                intent.putExtra("QuizName", it.name)
-                startActivity(intent)
+                if (it.id != null) {
+                    val quizInfo = QuizInfo(it.id, it.name)
+                    val intent = Intent(this@HostQuizPickerActivity, HostTeamsWaitingActivity::class.java)
+                    intent.putExtra("QuizInfo", quizInfo)
+                    startActivity(intent)
+                }
             })
 
         }

@@ -4,16 +4,16 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.*
 
-class JoinPlayViewModelFactory(private val application: Application, private val game: Game): ViewModelProvider.Factory {
+class JoinPlayViewModelFactory(private val application: Application, private val hostedGame: HostedGame): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return JoinPlayViewModel(application, game) as T
+        return JoinPlayViewModel(application, hostedGame) as T
     }
 }
 
-class JoinPlayViewModel(application: Application, game: Game): AndroidViewModel(application) {
+class JoinPlayViewModel(application: Application, hostedGame: HostedGame): AndroidViewModel(application) {
 
     private val connectionManager = JoinConnectionManager.getInstance(application)
-    private val quizGame = game
+    private val quizGame = hostedGame
     private val _answerButtonShouldBeEnabled: MutableLiveData<Boolean> = MutableLiveData(false)
 
     val answerButtonShouldBeEnabled: LiveData<Boolean>

@@ -14,7 +14,7 @@ class JoinPlayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val quizGame = intent.getParcelableExtra<Game>("QuizGame")
+        val quizGame = intent.getParcelableExtra<HostedGame>("QuizGame")
 
         supportActionBar?.title = quizGame.teamName
 
