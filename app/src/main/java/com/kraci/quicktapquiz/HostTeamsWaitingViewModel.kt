@@ -209,7 +209,7 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
 //    fun onCreate() {
 //        startAdvertise()
 //    }
-//
+
 //    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
 //    fun onDestroy() {
 //        Nearby.getConnectionsClient(_application.applicationContext).stopAdvertising()
