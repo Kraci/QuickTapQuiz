@@ -17,7 +17,7 @@ class HostPlayQuestionsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolde
     var clickListener: ClickListener? = null
 
     interface ClickListener {
-        fun onQuestionClick(question: GameAdapter)
+        fun onQuestionClick(question: GameAdapter, position: Int)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -55,7 +55,7 @@ class HostPlayQuestionsListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolde
     inner class QuestionViewHolder(private val binding: RecyclerviewItemQuestionBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener { clickListener?.onQuestionClick(items[adapterPosition]) }
+            binding.root.setOnClickListener { clickListener?.onQuestionClick(items[adapterPosition], adapterPosition) }
         }
 
         fun update(question: GameAdapter) {

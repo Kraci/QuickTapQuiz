@@ -21,6 +21,7 @@ class HostPlayQuestionsViewModelFactory(private val application: Application, pr
 class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): AndroidViewModel(application), HostPlayQuestionsListAdapter.ClickListener {
 
     private val _questionChoosed: MutableLiveData<GameAdapter> = MutableLiveData()
+    private val connectionManager = HostConnectionManager.getInstance(application)
 
     val questionChoosed: LiveData<GameAdapter>
         get() = _questionChoosed
@@ -39,8 +40,20 @@ class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): 
         adapter.clickListener = this
     }
 
-    override fun onQuestionClick(question: GameAdapter) {
+    override fun onQuestionClick(question: GameAdapter, position: Int) {
+        // ulozit si index, ked sa vratim viem ktora otazka bola otvorena
         _questionChoosed.value = question
+    }
+
+    fun teamScores(): Array<CharSequence> {
+        val teams = connectionManager.teams
+        teams.sortBy { it.score }
+        val scores = arrayListOf<String>()
+        for (team in teams) {
+            val score = "${team.teamName} - ${team.score}"
+            scores.add(score)
+        }
+        return scores.toTypedArray()
     }
 
 }

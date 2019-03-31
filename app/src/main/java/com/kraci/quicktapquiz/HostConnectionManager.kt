@@ -37,12 +37,20 @@ class HostConnectionManager {
 
     }
 
+    var teams = mutableListOf<Team>()
+
     fun registerCallback(hostConnectionCallback: HostConnectionCallback) {
         hostConnectionCallbacks.add(hostConnectionCallback)
     }
 
     fun unregisterCallback(hostConnectionCallback: HostConnectionCallback) {
         hostConnectionCallbacks.remove(hostConnectionCallback)
+    }
+
+    fun teamFor(deviceID: String): Team? {
+        val team = teams.filter { it.deviceID == deviceID }
+        if (team.size == 1) { return team[0] }
+        return null
     }
 
     fun startAdvertise(hostQuizName: String) {
@@ -63,7 +71,7 @@ class HostConnectionManager {
                         }
 
                         override fun onPayloadTransferUpdate(p0: String, p1: PayloadTransferUpdate) {
-                            println("Payload transfer update")
+                            // println("Payload transfer update")
                         }
 
                     })
@@ -87,17 +95,21 @@ class HostConnectionManager {
              println("ADVERTISING!")
          }
          .addOnFailureListener {
-             // it.printStackTrace()
              println("ADVERTISE FAILURE: $it")
          }
     }
 
-    fun sendPayload(client: String, payload: Payload) {
-        connectionsClient.sendPayload(client, payload)
-    }
-
-    fun sendMessage(clients: List<String>, message: String) {
-        connectionsClient.sendPayload(clients, Payload.fromBytes(message.toByteArray(UTF_8)))
+    fun sendMessage(clients: List<String>? = null, message: String) {
+        var clientsToSend = clients
+        if (clientsToSend == null) {
+            val teamClients = mutableListOf<String>()
+            for (team in teams) {
+                teamClients.add(team.deviceID)
+            }
+            clientsToSend = teamClients
+        }
+        // println("CLIENTS SEND: $clientsToSend")
+        connectionsClient.sendPayload(clientsToSend, Payload.fromBytes(message.toByteArray(UTF_8)))
     }
 
     fun stopAdvertise() {

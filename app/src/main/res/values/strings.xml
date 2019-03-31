@@ -6,4 +6,6 @@
     <string name="team_name_hint">Your Team Name</string>
     <string name="team_ready">Ready</string>
     <string name="answer">Answer!</string>
+    <string name="able_vote">Able vote</string>
+    <string name="score">Score</string>
 </resources>

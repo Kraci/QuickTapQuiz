@@ -73,28 +73,30 @@ public abstract class QuizDatabase : RoomDatabase() {
             categoryDao.deleteAll()
             quizDao.deleteAll()
 
+            val questionText = "Je dávno známe, že ak je zrozumiteľný obsah stránky, na ktorej rozloženie sa čitateľ díva, jeho pozornosť je rozptýlená. Dôvodom použitia Lorem Ipsum je fakt, že má viacmenej normálne rozloženie písmen, takže oproti použitiu 'Sem príde text, sem príde text' sa obsah vypĺňanej oblasti na stránke viac podobá na skutočný text."
+
             var quiz = Quiz(name = "USA Geographic")
             var quizID = quizDao.insert(quiz)
 
             var category = Category(name = "Mountains", quizId = quizID.toInt())
             var categoryID = categoryDao.insert(category)
 
-            var question = Question(text = "Mountain 1", hint = "hint1", image = "image1")
+            var question = Question(text = questionText, hint = "hint1", image = "image1")
             var questionID = questionDao.insert(question)
             var categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 500, false)
             categoryQuestionDao.insert(categoryQuestion)
 
-            question = Question(text = "Mountain 2", hint = "hint12", image = "image12")
+            question = Question(text = questionText, hint = "hint12", image = "image12")
             questionID = questionDao.insert(question)
             categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1000, false)
             categoryQuestionDao.insert(categoryQuestion)
 
-            question = Question(text = "Mountain 3", hint = "hint13", image = "image13")
+            question = Question(text = questionText, hint = "hint13", image = "image13")
             questionID = questionDao.insert(question)
             categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 2000, false)
             categoryQuestionDao.insert(categoryQuestion)
 
-            question = Question(text = "Mountain 4", hint = "hint14", image = "image14")
+            question = Question(text = questionText, hint = "hint14", image = "image14")
             questionID = questionDao.insert(question)
             categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
             categoryQuestionDao.insert(categoryQuestion)

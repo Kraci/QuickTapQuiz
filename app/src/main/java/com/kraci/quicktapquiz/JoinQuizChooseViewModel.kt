@@ -89,6 +89,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
             _emptyNameEvent.call()
             return
         }
+        connectionManager.stopDiscovery()
         hostedGame.teamName = teamName
         _hostGamePicked.value = hostedGame
     }

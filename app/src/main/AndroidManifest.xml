@@ -35,6 +35,8 @@
         </activity>
         <activity android:name=".HostPlayQuestionsActivity">
         </activity>
+        <activity android:name=".HostPlayActivity">
+        </activity>
     </application>
 
 </manifest>

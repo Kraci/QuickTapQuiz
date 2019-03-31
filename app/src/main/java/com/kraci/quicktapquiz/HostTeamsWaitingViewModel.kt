@@ -15,7 +15,7 @@ import java.util.*
 import kotlin.coroutines.experimental.CoroutineContext
 import kotlin.text.Charsets.UTF_8
 
-data class Team(val deviceID: String, val teamName: String, var isReady: Boolean = false)
+data class Team(val deviceID: String, val teamName: String, var isReady: Boolean = false, var score: Int = 0)
 
 @Parcelize
 data class QuestionGame(val text: String, val hint: String, val image: String, val value: Int, val bonus: Boolean, var answered: Boolean = false) : Parcelable
@@ -167,10 +167,12 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
     }
 
     fun startQuizTapped() {
-        val clients = mutableListOf<String>()
+        connectionManager.stopAdvertise()
         val teams = _teamsJoined.value
-        teams?.forEach { team -> clients.add(team.deviceID) }
-        connectionManager.sendMessage(clients, "START")
+        if (teams != null) {
+            connectionManager.teams = teams.toMutableList()
+        }
+        connectionManager.sendMessage(message = "START")
         _startQuizButton.call()
     }
 

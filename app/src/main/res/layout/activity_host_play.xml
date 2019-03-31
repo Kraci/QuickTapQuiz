@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".HostPlayActivity">
+
+    <data>
+
+        <variable
+                name="viewModel"
+                type="com.kraci.quicktapquiz.HostPlayViewModel"/>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <TextView
+                android:id="@+id/question_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:justificationMode="inter_word"
+                android:text="@{viewModel.questionText}"/>
+
+        <Button
+                android:id="@+id/able_vote_button"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/able_vote"
+                android:onClick="@{() -> viewModel.ableVoteClicked()}"
+                android:enabled="@{viewModel.ableVoteEnabled}"
+                android:background="@{viewModel.ableVoteEnabled ? @drawable/rounded_corners_button : @drawable/rounded_corners_button_disabled}"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/buttonText"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/question_text_view"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/hint_button"/>
+
+        <Button
+                android:id="@+id/hint_button"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="Hint"
+                android:onClick="@{() -> viewModel.hintClicked()}"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp"
+                android:textColor="@color/buttonText"
+                android:background="@drawable/rounded_corners_button"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                app:layout_constraintWidth_min="60dp"
+                app:layout_constraintTop_toBottomOf="@+id/question_text_view"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/voted_teams"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/hint_button"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:setAdapter="@{viewModel.adapter}"
+                tools:listitem="@layout/recyclerview_item_voted"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
