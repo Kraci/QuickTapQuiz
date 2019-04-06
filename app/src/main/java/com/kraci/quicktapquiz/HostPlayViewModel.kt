@@ -10,14 +10,14 @@ class HostPlayViewModelFactory(private val application: Application, private val
     }
 }
 
-class HostPlayViewModel(application: Application, gameAdapter: GameAdapter) : AndroidViewModel(application), HostPlayListAdapter.ClickListener {
+class HostPlayViewModel(application: Application, private val gameAdapter: GameAdapter) : AndroidViewModel(application), HostPlayListAdapter.ClickListener {
 
-    val adapter = HostPlayListAdapter()
+    val adapter = HostPlayListAdapter(application.applicationContext)
 
-    private val _gameAdapter = gameAdapter
     private val _hintClicked: MutableLiveData<String> = MutableLiveData()
     private val _questionText: MutableLiveData<String> = MutableLiveData()
-    private val _ableVoteEnabled: MutableLiveData<Boolean> = MutableLiveData(true)
+    private val _ableVoted: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _answerEvent: LiveEvent<Any> = LiveEvent()
     private val connectionManager = HostConnectionManager.getInstance(application)
     private val answeredTeams = mutableListOf<Team>()
 
@@ -27,8 +27,11 @@ class HostPlayViewModel(application: Application, gameAdapter: GameAdapter) : An
     val questionText: LiveData<String>
         get() = _questionText
 
-    val ableVoteEnabled: LiveData<Boolean>
-        get() = _ableVoteEnabled
+    val ableVoted: LiveData<Boolean>
+        get() = _ableVoted
+
+    val answerEvent: LiveEvent<Any>
+        get() = _answerEvent
 
     val connectionCallback = object : HostConnectionManager.HostConnectionCallback {
 
@@ -57,20 +60,34 @@ class HostPlayViewModel(application: Application, gameAdapter: GameAdapter) : An
     }
 
     fun ableVoteClicked() {
-        _ableVoteEnabled.value = false
-        connectionManager.sendMessage(message = "RESET")
+        val ableVoted = _ableVoted.value
+        if (ableVoted != null && ableVoted) {
+            _answerEvent.call()
+            connectionManager.sendMessage(message = "DISABLE")
+        } else {
+            _ableVoted.value = true
+            connectionManager.sendMessage(message = "RESET")
+        }
     }
 
     fun hintClicked() {
-        _hintClicked.value = _gameAdapter.hint
+        _hintClicked.value = gameAdapter.hint
     }
 
     override fun onCorrectClick(team: Team) {
-
+        connectionManager.updateScoreFor(team, gameAdapter.value)
+        _answerEvent.call()
+        connectionManager.sendMessage(message = "DISABLE")
     }
 
     override fun onWrongClick(team: Team) {
+        connectionManager.updateScoreFor(team, gameAdapter.value * -1)
+        adapter.answeringIndex += 1
+        adapter.notifyDataSetChanged()
+    }
 
+    fun disableVote() {
+        connectionManager.sendMessage(message = "DISABLE")
     }
 
     override fun onCleared() {

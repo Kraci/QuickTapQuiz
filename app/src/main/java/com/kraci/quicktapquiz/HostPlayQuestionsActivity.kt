@@ -2,7 +2,6 @@ package com.kraci.quicktapquiz
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,7 +32,7 @@ class HostPlayQuestionsActivity : AppCompatActivity() {
             questionChoosed.observe(this@HostPlayQuestionsActivity, Observer {
                 val intent = Intent(this@HostPlayQuestionsActivity, HostPlayActivity::class.java)
                 intent.putExtra("GameAdapter", it)
-                startActivityForResult(intent, 0)
+                startActivityForResult(intent, 1)
             })
 
         }
@@ -59,6 +58,13 @@ class HostPlayQuestionsActivity : AppCompatActivity() {
             dialog.show()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            hostPlayQuestionsViewModel.updateQuestionsAfterAnswer()
+        }
     }
 
 }

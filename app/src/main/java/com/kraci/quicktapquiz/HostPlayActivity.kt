@@ -1,5 +1,6 @@
 package com.kraci.quicktapquiz
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -20,7 +21,6 @@ class HostPlayActivity : AppCompatActivity() {
         val gameAdapter = intent.getParcelableExtra<GameAdapter>("GameAdapter")
 
         supportActionBar?.title = gameAdapter.value.toString()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_host_play)
 
@@ -35,12 +35,22 @@ class HostPlayActivity : AppCompatActivity() {
                 dialog.show()
             })
 
+            answerEvent.observe(this@HostPlayActivity, Observer {
+                setResult(Activity.RESULT_OK)
+                finish()
+            })
+
         }
 
         binding.setLifecycleOwner(this)
         binding.votedTeams.layoutManager = LinearLayoutManager(baseContext)
         binding.votedTeams.setHasFixedSize(true)
         binding.viewModel = hostPlayViewModel
+    }
+
+    override fun onBackPressed() {
+        hostPlayViewModel.disableVote()
+        super.onBackPressed()
     }
 
 }

@@ -3,6 +3,7 @@ package com.kraci.quicktapquiz
 import android.app.Application
 import android.os.Parcel
 import android.os.Parcelable
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.google.android.gms.nearby.connection.*
 import kotlinx.android.parcel.Parcelize
@@ -120,7 +121,9 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
             }
         }
 
-        override fun onDisconnected(client: String) { }
+        override fun onDisconnected(client: String) {
+            Toast.makeText(application.applicationContext, "$client LEFT!", Toast.LENGTH_LONG).show()
+        }
 
     }
 

@@ -53,6 +53,14 @@ class HostConnectionManager {
         return null
     }
 
+    fun updateScoreFor(updateTeam: Team, value: Int) {
+        for (team in teams) {
+            if (updateTeam == team) {
+                team.score += value
+            }
+        }
+    }
+
     fun startAdvertise(hostQuizName: String) {
 
         connectionsClient.startAdvertising(

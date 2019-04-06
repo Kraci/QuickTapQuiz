@@ -7,5 +7,6 @@
     <string name="team_ready">Ready</string>
     <string name="answer">Answer!</string>
     <string name="able_vote">Able vote</string>
+    <string name="pass_question">Pass question</string>
     <string name="score">Score</string>
 </resources>

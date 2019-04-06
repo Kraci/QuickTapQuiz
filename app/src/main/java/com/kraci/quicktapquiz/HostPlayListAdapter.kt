@@ -1,12 +1,16 @@
 package com.kraci.quicktapquiz
 
+import android.app.Application
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.kraci.quicktapquiz.databinding.RecyclerviewItemVotedBinding
 
-class HostPlayListAdapter : RecyclerView.Adapter<HostPlayListAdapter.VotedTeamViewHolder>() {
+class HostPlayListAdapter(private val context: Context) : RecyclerView.Adapter<HostPlayListAdapter.VotedTeamViewHolder>() {
 
+    var answeringIndex = 0
     var clickListener: ClickListener? = null
     var teams: List<Team> = mutableListOf()
         set(value) {
@@ -38,6 +42,19 @@ class HostPlayListAdapter : RecyclerView.Adapter<HostPlayListAdapter.VotedTeamVi
 
         fun update(team: Team) {
             binding.textViewTeamName.text = team.teamName
+            if (adapterPosition == answeringIndex) {
+                binding.textViewTeamName.background = ContextCompat.getDrawable(context, R.drawable.rounded_corners_cell)
+                binding.textViewCorrect.background = ContextCompat.getDrawable(context, R.drawable.rounded_corners_cell)
+                binding.textViewWrong.background = ContextCompat.getDrawable(context, R.drawable.rounded_corners_cell)
+                binding.textViewCorrect.isEnabled = true
+                binding.textViewWrong.isEnabled = true
+            } else {
+                binding.textViewTeamName.background = ContextCompat.getDrawable(context, R.drawable.rounded_corners_button_disabled)
+                binding.textViewCorrect.background = ContextCompat.getDrawable(context, R.drawable.rounded_corners_button_disabled)
+                binding.textViewWrong.background = ContextCompat.getDrawable(context, R.drawable.rounded_corners_button_disabled)
+                binding.textViewCorrect.isEnabled = false
+                binding.textViewWrong.isEnabled = false
+            }
         }
 
     }

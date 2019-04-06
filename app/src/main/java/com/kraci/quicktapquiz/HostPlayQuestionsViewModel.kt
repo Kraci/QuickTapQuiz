@@ -23,6 +23,8 @@ class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): 
     private val _questionChoosed: MutableLiveData<GameAdapter> = MutableLiveData()
     private val connectionManager = HostConnectionManager.getInstance(application)
 
+    private var choosedQuestionIndex = -1
+
     val questionChoosed: LiveData<GameAdapter>
         get() = _questionChoosed
 
@@ -41,19 +43,37 @@ class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): 
     }
 
     override fun onQuestionClick(question: GameAdapter, position: Int) {
-        // ulozit si index, ked sa vratim viem ktora otazka bola otvorena
+        choosedQuestionIndex = position
         _questionChoosed.value = question
     }
 
     fun teamScores(): Array<CharSequence> {
         val teams = connectionManager.teams
-        teams.sortBy { it.score }
+        teams.sortByDescending { it.score }
         val scores = arrayListOf<String>()
         for (team in teams) {
             val score = "${team.teamName} - ${team.score}"
             scores.add(score)
         }
         return scores.toTypedArray()
+    }
+
+    fun updateQuestionsAfterAnswer() {
+        val items = adapter.items.toMutableList()
+        items.removeAt(choosedQuestionIndex)
+        val filteredEmptyCategories = items.filterIndexed { index, item ->
+            if (item.type == GameAdapterType.CATEGORY) {
+                if (index + 1 < items.size && items[index + 1].type != GameAdapterType.QUESTION) {
+                    return@filterIndexed false
+                }
+                if (index + 1 == items.size) {
+                    return@filterIndexed false
+                }
+            }
+            return@filterIndexed true
+        }
+        adapter.items = filteredEmptyCategories
+        adapter.notifyDataSetChanged()
     }
 
 }

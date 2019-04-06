@@ -1,6 +1,7 @@
 package com.kraci.quicktapquiz
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
 
 class JoinTeamsWaitingViewModelFactory(private val application: Application, private val param: HostedGame) : ViewModelProvider.Factory {
@@ -51,7 +52,9 @@ class JoinTeamsWaitingViewModel(application: Application, param: HostedGame) : A
             }
         }
 
-        override fun onDisconnected(host: String) { }
+        override fun onDisconnected(host: String) {
+            Toast.makeText(application.applicationContext, "$host LEFT!", Toast.LENGTH_LONG).show()
+        }
 
     }
 

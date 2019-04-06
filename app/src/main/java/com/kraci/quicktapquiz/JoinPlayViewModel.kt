@@ -29,6 +29,8 @@ class JoinPlayViewModel(application: Application, hostedGame: HostedGame): Andro
         override fun onMessageReceived(host: String, message: String) {
             if (message == "RESET") {
                 _answerButtonShouldBeEnabled.value = true
+            } else if (message == "DISABLE") {
+                _answerButtonShouldBeEnabled.value = false
             }
         }
 
