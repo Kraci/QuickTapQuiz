@@ -1,10 +1,7 @@
 package com.kraci.quicktapquiz
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface QuizDao {
@@ -14,6 +11,9 @@ interface QuizDao {
 
     @Query("SELECT * FROM quizzes ORDER BY name ASC")
     fun allQuizzes(): LiveData<List<Quiz>>
+
+    @Delete
+    fun delete(quiz: Quiz)
 
     @Query("DELETE FROM quizzes")
     fun deleteAll()

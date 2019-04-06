@@ -37,6 +37,10 @@
         </activity>
         <activity android:name=".HostPlayActivity">
         </activity>
+        <activity android:name=".ManageQuizzesActivity">
+        </activity>
+        <activity android:name=".AddQuizCameraActivity">
+        </activity>
     </application>
 
 </manifest>

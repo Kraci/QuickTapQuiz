@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ManageQuizzesActivity">
+
+    <data>
+
+        <variable
+                name="viewModel"
+                type="com.kraci.quicktapquiz.ManageQuizzesViewModel"/>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:setAdapter="@{viewModel.adapter}"
+                tools:listitem="@layout/recyclerview_item_check"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:onClick="@{() -> viewModel.addQuizClicked()}"
+                app:fabSize="normal"
+                app:srcCompat="@android:drawable/ic_menu_add"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

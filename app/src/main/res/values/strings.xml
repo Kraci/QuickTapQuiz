@@ -2,6 +2,7 @@
     <string name="app_name">QuickTapQuiz</string>
     <string name="host_quiz_button">Host Quiz</string>
     <string name="join_quiz_button">Join Quiz</string>
+    <string name="manage_quizzes_button">Manage Quizzes</string>
     <string name="start_quiz_button">Start Quiz</string>
     <string name="team_name_hint">Your Team Name</string>
     <string name="team_ready">Ready</string>

@@ -10,6 +10,7 @@ class QuizRepository(private val quizDao: QuizDao,
                      private val quizGameDao: QuizGameDao) {
 
     val allQuizzes: LiveData<List<Quiz>> = quizDao.allQuizzes()
+
     fun quizGame(quizId: Int): LiveData<List<QuizGameDao.QuizGameDB>> {
         return quizGameDao.gameForQuiz(quizId)
     }
@@ -17,6 +18,11 @@ class QuizRepository(private val quizDao: QuizDao,
     @WorkerThread
     suspend fun insert(quiz: Quiz) {
         quizDao.insert(quiz)
+    }
+
+    @WorkerThread
+    suspend fun delete(quiz: Quiz) {
+        quizDao.delete(quiz)
     }
 
     @WorkerThread

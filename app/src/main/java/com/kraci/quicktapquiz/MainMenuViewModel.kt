@@ -16,7 +16,13 @@ class MainMenuViewModel : ViewModel() {
 
     fun clickEventAction(view: View) {
         val button = (view as Button)
-        _clickEvent.value = if (button.text.equals("Host Quiz")) HostQuizPickerActivity::class.java else JoinQuizChooseActivity::class.java
+        if (button.text.equals("Host Quiz")) {
+            _clickEvent.value = HostQuizPickerActivity::class.java
+        } else if (button.text.equals("Join Quiz")) {
+            _clickEvent.value = JoinQuizChooseActivity::class.java
+        } else if (button.text.equals("Manage Quizzes")) {
+            _clickEvent.value = ManageQuizzesActivity::class.java
+        }
     }
 
 }
