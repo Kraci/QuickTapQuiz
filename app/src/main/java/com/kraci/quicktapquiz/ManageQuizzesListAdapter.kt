@@ -36,7 +36,7 @@ class ManageQuizzesListAdapter : RecyclerView.Adapter<ManageQuizzesListAdapter.Q
 
         fun update(quiz: Quiz) {
             binding.textViewTeamName.text = quiz.name
-            binding.textViewChecked.text = "D"
+            binding.textViewChecked.setImageResource(R.drawable.ic_delete_white_36dp)
         }
 
     }

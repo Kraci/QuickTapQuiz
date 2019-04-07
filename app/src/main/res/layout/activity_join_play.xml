@@ -17,17 +17,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <Button
+        <ImageButton
                 android:id="@+id/answer"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="300dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="50dp"
-                android:layout_marginEnd="50dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 android:enabled="@{viewModel.answerButtonShouldBeEnabled}"
                 android:onClickListener="@{() -> viewModel.answerButtonClicked()}"
-                android:text="@string/answer"/>
+                android:background="@{viewModel.answerButtonShouldBeEnabled ? @drawable/circle_button : @drawable/circle_button_disabled}"
+                android:src="@drawable/ic_answer_white_96dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

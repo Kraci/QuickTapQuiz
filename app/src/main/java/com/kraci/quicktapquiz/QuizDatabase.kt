@@ -101,6 +101,11 @@ public abstract class QuizDatabase : RoomDatabase() {
             categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
             categoryQuestionDao.insert(categoryQuestion)
 
+            question = Question(text = questionText, hint = "hint15", image = "image15")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 1500, true)
+            categoryQuestionDao.insert(categoryQuestion)
+
             category = Category(name = "Rivers", quizId = quizID.toInt())
             categoryID = categoryDao.insert(category)
 
@@ -122,6 +127,11 @@ public abstract class QuizDatabase : RoomDatabase() {
             question = Question(text = "River 4", hint = "hint24", image = "image24")
             questionID = questionDao.insert(question)
             categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "River Bonus", hint = "hint25", image = "image25")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 2000, true)
             categoryQuestionDao.insert(categoryQuestion)
 
             category = Category(name = "Cities", quizId = quizID.toInt())
@@ -147,6 +157,11 @@ public abstract class QuizDatabase : RoomDatabase() {
             categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
             categoryQuestionDao.insert(categoryQuestion)
 
+            question = Question(text = "City Bonus", hint = "hint35", image = "image35")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 500, true)
+            categoryQuestionDao.insert(categoryQuestion)
+
             category = Category(name = "Buildings", quizId = quizID.toInt())
             categoryID = categoryDao.insert(category)
 
@@ -168,6 +183,11 @@ public abstract class QuizDatabase : RoomDatabase() {
             question = Question(text = "Building 4", hint = "hint44", image = "image44")
             questionID = questionDao.insert(question)
             categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, false)
+            categoryQuestionDao.insert(categoryQuestion)
+
+            question = Question(text = "Buildings Bonus", hint = "hint45", image = "image45")
+            questionID = questionDao.insert(question)
+            categoryQuestion = CategoryQuestion(categoryID.toInt(), questionID.toInt(), 5000, true)
             categoryQuestionDao.insert(categoryQuestion)
 
             quiz = Quiz(name = "Elementary Math")

@@ -27,7 +27,12 @@ class HostTeamsWaitingListAdapter : RecyclerView.Adapter<HostTeamsWaitingListAda
 
         fun update(team: Team) {
             binding.textViewTeamName.text = team.teamName
-            binding.textViewChecked.text = if (team.isReady) "R" else ""
+            binding.textViewChecked.setImageResource(R.drawable.ic_check_white_36dp)
+            if (team.isReady) {
+                binding.textViewChecked.imageAlpha = 255
+            } else {
+                binding.textViewChecked.imageAlpha = 0
+            }
         }
 
     }

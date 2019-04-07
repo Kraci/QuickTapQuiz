@@ -19,12 +19,13 @@ class HostPlayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val gameAdapter = intent.getParcelableExtra<GameAdapter>("GameAdapter")
+        val bonus = intent.getParcelableExtra<QuestionGame?>("GameAdapterBonus")
 
-        supportActionBar?.title = gameAdapter.value.toString()
+        supportActionBar?.title = "${gameAdapter.category} - ${gameAdapter.value}"
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_host_play)
 
-        hostPlayViewModel = ViewModelProviders.of(this, HostPlayViewModelFactory(application, gameAdapter)).get(HostPlayViewModel::class.java).apply {
+        hostPlayViewModel = ViewModelProviders.of(this, HostPlayViewModelFactory(application, gameAdapter, bonus)).get(HostPlayViewModel::class.java).apply {
 
             hintClicked.observe(this@HostPlayActivity, Observer {
                 val dialog = AlertDialog.Builder(this@HostPlayActivity)

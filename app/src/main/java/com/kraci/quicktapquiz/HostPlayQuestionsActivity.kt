@@ -32,6 +32,8 @@ class HostPlayQuestionsActivity : AppCompatActivity() {
             questionChoosed.observe(this@HostPlayQuestionsActivity, Observer {
                 val intent = Intent(this@HostPlayQuestionsActivity, HostPlayActivity::class.java)
                 intent.putExtra("GameAdapter", it)
+                intent.putExtra("GameAdapterBonus", bonus)
+                bonus = null
                 startActivityForResult(intent, 1)
             })
 

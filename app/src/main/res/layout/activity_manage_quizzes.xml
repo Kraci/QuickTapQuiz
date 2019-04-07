@@ -33,7 +33,8 @@
                 android:layout_margin="16dp"
                 android:onClick="@{() -> viewModel.addQuizClicked()}"
                 app:fabSize="normal"
-                app:srcCompat="@android:drawable/ic_menu_add"/>
+                android:src="@drawable/ic_add_white_36dp"
+        />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

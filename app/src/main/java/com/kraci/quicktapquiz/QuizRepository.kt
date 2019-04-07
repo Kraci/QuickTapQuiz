@@ -15,9 +15,11 @@ class QuizRepository(private val quizDao: QuizDao,
         return quizGameDao.gameForQuiz(quizId)
     }
 
+    // Quiz
+
     @WorkerThread
-    suspend fun insert(quiz: Quiz) {
-        quizDao.insert(quiz)
+    suspend fun insert(quiz: Quiz): Long {
+        return quizDao.insert(quiz)
     }
 
     @WorkerThread
@@ -26,8 +28,29 @@ class QuizRepository(private val quizDao: QuizDao,
     }
 
     @WorkerThread
-    suspend fun deleteAll() {
+    suspend fun deleteAllQuizzes() {
         quizDao.deleteAll()
+    }
+
+    // Category
+
+    @WorkerThread
+    suspend fun insert(category: Category): Long {
+        return categoryDao.insert(category)
+    }
+
+    // Question
+
+    @WorkerThread
+    suspend fun insert(question: Question): Long {
+        return questionDao.insert(question)
+    }
+
+    // Category Question
+
+    @WorkerThread
+    suspend fun insert(categoryQuestion: CategoryQuestion) {
+        categoryQuestionDao.insert(categoryQuestion)
     }
 
 }

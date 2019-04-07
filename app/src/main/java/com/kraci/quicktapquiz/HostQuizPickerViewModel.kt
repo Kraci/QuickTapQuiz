@@ -46,8 +46,4 @@ class HostQuizPickerViewModel(application: Application) : AndroidViewModel(appli
         repository.insert(quiz)
     }
 
-    fun deleteAll() = scope.launch(Dispatchers.IO) {
-        repository.deleteAll()
-    }
-
 }

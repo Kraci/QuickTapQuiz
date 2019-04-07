@@ -16,7 +16,7 @@ class MainMenuActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-        supportActionBar?.title = "Quick Tap Quiz"
+        supportActionBar?.title = ""
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 

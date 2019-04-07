@@ -4,22 +4,23 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.google.android.gms.nearby.connection.ConnectionInfo
 
-class HostPlayViewModelFactory(private val application: Application, private val gameAdapter: GameAdapter) : ViewModelProvider.Factory {
+class HostPlayViewModelFactory(private val application: Application, private val gameAdapter: GameAdapter, private val bonus: QuestionGame?) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return HostPlayViewModel(application, gameAdapter) as T
+        return HostPlayViewModel(application, gameAdapter, bonus) as T
     }
 }
 
-class HostPlayViewModel(application: Application, private val gameAdapter: GameAdapter) : AndroidViewModel(application), HostPlayListAdapter.ClickListener {
+class HostPlayViewModel(application: Application, private val gameAdapter: GameAdapter, private val bonus: QuestionGame?) : AndroidViewModel(application), HostPlayListAdapter.ClickListener {
 
     val adapter = HostPlayListAdapter(application.applicationContext)
 
     private val _hintClicked: MutableLiveData<String> = MutableLiveData()
     private val _questionText: MutableLiveData<String> = MutableLiveData()
-    private val _ableVoted: MutableLiveData<Boolean> = MutableLiveData(false)
     private val _answerEvent: LiveEvent<Any> = LiveEvent()
+    private val _ableVoted: MutableLiveData<Boolean> = MutableLiveData(false)
     private val connectionManager = HostConnectionManager.getInstance(application)
     private val answeredTeams = mutableListOf<Team>()
+    private var bonusMode = false
 
     val hintClicked: LiveData<String>
         get() = _hintClicked
@@ -27,11 +28,11 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
     val questionText: LiveData<String>
         get() = _questionText
 
-    val ableVoted: LiveData<Boolean>
-        get() = _ableVoted
-
     val answerEvent: LiveEvent<Any>
         get() = _answerEvent
+
+    val ableVoted: LiveData<Boolean>
+        get() = _ableVoted
 
     val connectionCallback = object : HostConnectionManager.HostConnectionCallback {
 
@@ -60,30 +61,50 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
     }
 
     fun ableVoteClicked() {
-        val ableVoted = _ableVoted.value
-        if (ableVoted != null && ableVoted) {
-            _answerEvent.call()
+        val voted = _ableVoted.value
+        if (voted != null && voted) {
             connectionManager.sendMessage(message = "DISABLE")
+            _answerEvent.call()
         } else {
-            _ableVoted.value = true
             connectionManager.sendMessage(message = "RESET")
+            _ableVoted.value = true
         }
     }
 
     fun hintClicked() {
-        _hintClicked.value = gameAdapter.hint
+        if (bonusMode && bonus != null) {
+            _hintClicked.value = bonus.hint
+        } else {
+            _hintClicked.value = gameAdapter.hint
+        }
     }
 
     override fun onCorrectClick(team: Team) {
-        connectionManager.updateScoreFor(team, gameAdapter.value)
-        _answerEvent.call()
         connectionManager.sendMessage(message = "DISABLE")
+        if (bonus != null) {
+            if (bonusMode) {
+                connectionManager.updateScoreFor(team, bonus.value)
+                _answerEvent.call()
+            } else {
+                connectionManager.updateScoreFor(team, gameAdapter.value)
+                _questionText.value = bonus.text
+                adapter.teams = listOf(team)
+                bonusMode = true
+            }
+        } else {
+            connectionManager.updateScoreFor(team, gameAdapter.value)
+            _answerEvent.call()
+        }
     }
 
     override fun onWrongClick(team: Team) {
-        connectionManager.updateScoreFor(team, gameAdapter.value * -1)
-        adapter.answeringIndex += 1
-        adapter.notifyDataSetChanged()
+        if (bonusMode) {
+            _answerEvent.call()
+        } else {
+            connectionManager.updateScoreFor(team, gameAdapter.value * -1)
+            adapter.answeringIndex += 1
+            adapter.notifyDataSetChanged()
+        }
     }
 
     fun disableVote() {

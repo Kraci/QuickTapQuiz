@@ -19,7 +19,7 @@ import kotlin.text.Charsets.UTF_8
 data class Team(val deviceID: String, val teamName: String, var isReady: Boolean = false, var score: Int = 0)
 
 @Parcelize
-data class QuestionGame(val text: String, val hint: String, val image: String, val value: Int, val bonus: Boolean, var answered: Boolean = false) : Parcelable
+data class QuestionGame(val text: String, val hint: String, val image: String, val value: Int, val bonus: Boolean) : Parcelable
 
 @Parcelize
 data class CategoryGame(val name: String, var questions: @RawValue List<QuestionGame>) : Parcelable
