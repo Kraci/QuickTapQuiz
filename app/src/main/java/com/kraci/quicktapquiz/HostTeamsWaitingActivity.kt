@@ -31,6 +31,7 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
                     val intent = Intent(this@HostTeamsWaitingActivity, HostPlayQuestionsActivity::class.java)
                     intent.putExtra("QuizGame", quizGame)
                     startActivity(intent)
+                    finish()
                 }
             })
 
@@ -40,6 +41,12 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
         binding.hostedGames.layoutManager = LinearLayoutManager(baseContext)
         binding.hostedGames.setHasFixedSize(true)
         binding.viewModel = hostTeamsWaitingViewModel
+    }
+
+    override fun onBackPressed() {
+        hostTeamsWaitingViewModel.stopAdvertise()
+        hostTeamsWaitingViewModel.stopAllClients()
+        super.onBackPressed()
     }
 
 }

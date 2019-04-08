@@ -69,4 +69,16 @@ class HostPlayQuestionsActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("Do you really want to close this game?")
+        dialog.setPositiveButton("Yes") { _, _ ->
+            hostPlayQuestionsViewModel.stopAllClients()
+            super.onBackPressed()
+        }
+        dialog.setNegativeButton("No") { d, _ -> d.dismiss() }
+        dialog.create()
+        dialog.show()
+    }
+
 }

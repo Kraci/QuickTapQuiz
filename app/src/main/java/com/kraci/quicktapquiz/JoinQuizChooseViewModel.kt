@@ -61,7 +61,6 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
 
     init {
         connectionManager.registerCallback(joinConnectionCallback)
-        connectionManager.stopDiscovery()
         connectionManager.startDiscovery()
 
         adapter.clickListener = this
@@ -89,14 +88,17 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
             _emptyNameEvent.call()
             return
         }
-        connectionManager.stopDiscovery()
+        stopDiscovery()
         hostedGame.teamName = teamName
         _hostGamePicked.value = hostedGame
     }
 
+    fun stopDiscovery() {
+        connectionManager.stopDiscovery()
+    }
+
     override fun onCleared() {
         super.onCleared()
-        println("QUIZ CHOOSE onCleared VM CALL")
         connectionManager.unregisterCallback(joinConnectionCallback)
     }
 

@@ -13,6 +13,7 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.Main
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.coroutines.experimental.CoroutineContext
 import kotlin.text.Charsets.UTF_8
 
@@ -122,7 +123,11 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
         }
 
         override fun onDisconnected(client: String) {
-            Toast.makeText(application.applicationContext, "$client LEFT!", Toast.LENGTH_LONG).show()
+            val teams = _teamsJoined.value
+            if (teams != null) {
+                val teamsWithoutDisconnected = teams.filter { it.deviceID != client }
+                _teamsJoined.value = ArrayList(teamsWithoutDisconnected)
+            }
         }
 
     }
@@ -170,7 +175,7 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
     }
 
     fun startQuizTapped() {
-        connectionManager.stopAdvertise()
+        stopAdvertise()
         val teams = _teamsJoined.value
         if (teams != null) {
             connectionManager.teams = teams.toMutableList()
@@ -201,6 +206,14 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
         categories.add(actualCategory)
 
         return QuizGame(quizGameName, categories)
+    }
+
+    fun stopAdvertise() {
+        connectionManager.stopAdvertise()
+    }
+
+    fun stopAllClients() {
+        connectionManager.stopAllClients()
     }
 
     override fun onCleared() {

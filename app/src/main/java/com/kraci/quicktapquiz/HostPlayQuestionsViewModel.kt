@@ -3,6 +3,7 @@ package com.kraci.quicktapquiz
 import android.app.Application
 import android.os.Parcelable
 import androidx.lifecycle.*
+import com.google.android.gms.nearby.connection.ConnectionInfo
 import kotlinx.android.parcel.Parcelize
 
 enum class GameAdapterType {
@@ -86,6 +87,10 @@ class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): 
             return@filterIndexed true
         }
         adapter.items = filteredEmptyCategories
+    }
+
+    fun stopAllClients() {
+        connectionManager.stopAllClients()
     }
 
 }

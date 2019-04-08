@@ -42,4 +42,9 @@ class JoinQuizChooseActivity : AppCompatActivity() {
         binding.viewModel = joinQuizChooseViewModel
     }
 
+    override fun onBackPressed() {
+        joinQuizChooseViewModel.stopDiscovery()
+        super.onBackPressed()
+    }
+
 }

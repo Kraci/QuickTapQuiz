@@ -31,12 +31,21 @@ class JoinTeamsWaitingActivity : AppCompatActivity() {
                 finish()
             })
 
+            disconnectedFromHost.observe(this@JoinTeamsWaitingActivity, Observer {
+                onBackPressed()
+            })
+
         }
 
         binding.setLifecycleOwner(this)
         binding.joinedTeams.layoutManager = LinearLayoutManager(baseContext)
         binding.joinedTeams.setHasFixedSize(true)
         binding.viewModel = joinTeamsWaitingViewModel
+    }
+
+    override fun onBackPressed() {
+        joinTeamsWaitingViewModel.disconnectFromHost()
+        super.onBackPressed()
     }
 
 }

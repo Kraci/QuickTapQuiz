@@ -95,6 +95,10 @@ class HostConnectionManager {
 
                 override fun onDisconnected(p0: String) {
                     hostConnectionCallbacks.forEach { callback -> callback.onDisconnected(p0) }
+                    if (teams.size > 0) {
+                        val teamsAfterDisconnect = teams.filter { it.deviceID != p0 }
+                        teams = teamsAfterDisconnect.toMutableList()
+                    }
                 }
 
          },
@@ -116,7 +120,6 @@ class HostConnectionManager {
             }
             clientsToSend = teamClients
         }
-        // println("CLIENTS SEND: $clientsToSend")
         connectionsClient.sendPayload(clientsToSend, Payload.fromBytes(message.toByteArray(UTF_8)))
     }
 
@@ -124,5 +127,8 @@ class HostConnectionManager {
         connectionsClient.stopAdvertising()
     }
 
+    fun stopAllClients() {
+        connectionsClient.stopAllEndpoints()
+    }
 
 }

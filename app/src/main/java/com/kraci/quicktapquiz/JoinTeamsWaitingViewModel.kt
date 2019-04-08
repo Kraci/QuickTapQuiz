@@ -4,19 +4,19 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.*
 
-class JoinTeamsWaitingViewModelFactory(private val application: Application, private val param: HostedGame) : ViewModelProvider.Factory {
+class JoinTeamsWaitingViewModelFactory(private val application: Application, private val hostGame: HostedGame) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return JoinTeamsWaitingViewModel(application, param) as T
+        return JoinTeamsWaitingViewModel(application, hostGame) as T
     }
 }
 
-class JoinTeamsWaitingViewModel(application: Application, param: HostedGame) : AndroidViewModel(application) {
+class JoinTeamsWaitingViewModel(application: Application, private val hostGame: HostedGame) : AndroidViewModel(application) {
 
     private val _teamsJoined: MutableLiveData<List<Team>> = MutableLiveData()
     private val _readyButtonShouldBeActive: MutableLiveData<Boolean> = MutableLiveData(false)
     private val _startQuizEvent: MutableLiveData<HostedGame> = MutableLiveData()
+    private val _diconnectedFromHost: LiveEvent<Any> = LiveEvent()
     private val connectionManager = JoinConnectionManager.getInstance(application)
-    private val hostGame = param
 
     val adapter = HostTeamsWaitingListAdapter()
 
@@ -29,19 +29,16 @@ class JoinTeamsWaitingViewModel(application: Application, param: HostedGame) : A
     val startQuizEvent: LiveData<HostedGame>
         get() = _startQuizEvent
 
-    private var hostID = ""
-        set(value) {
-            field = value
-            if (value == hostGame.hostID) {
-                _readyButtonShouldBeActive.value = true
-            }
-        }
+    val disconnectedFromHost: LiveEvent<Any>
+        get() = _diconnectedFromHost
 
     val joinCallback = object : JoinConnectionManager.JoinConnectionCallback {
 
         override fun onConnectionSuccessful(host: String) {
-            hostID = host
-            _readyButtonShouldBeActive.value = true
+            if (host == hostGame.hostID) {
+                connectionManager.host = host
+                _readyButtonShouldBeActive.value = true
+            }
         }
 
         override fun onMessageReceived(host: String, message: String) {
@@ -53,7 +50,8 @@ class JoinTeamsWaitingViewModel(application: Application, param: HostedGame) : A
         }
 
         override fun onDisconnected(host: String) {
-            Toast.makeText(application.applicationContext, "$host LEFT!", Toast.LENGTH_LONG).show()
+            connectionManager.host = null
+            _diconnectedFromHost.call()
         }
 
     }
@@ -70,7 +68,7 @@ class JoinTeamsWaitingViewModel(application: Application, param: HostedGame) : A
 
     fun readyButtonClicked() {
         _readyButtonShouldBeActive.value = false
-        connectionManager.sendMessage(hostID, "READY")
+        connectionManager.sendMessageToHost("READY")
     }
 
     fun parseTeamsFrom(message: String): List<Team> {
@@ -87,6 +85,10 @@ class JoinTeamsWaitingViewModel(application: Application, param: HostedGame) : A
 
     private fun requestConnectionFor(hostedGame: HostedGame) {
         connectionManager.requestConnection(hostedGame.hostID, hostedGame.teamName)
+    }
+
+    fun disconnectFromHost() {
+        connectionManager.disconnectFromHost()
     }
 
     override fun onCleared() {

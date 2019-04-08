@@ -1,11 +1,15 @@
 package com.kraci.quicktapquiz
 
+import android.Manifest
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.databinding.DataBindingUtil
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.kraci.quicktapquiz.databinding.ActivityMainBinding
 
 class MainMenuActivity : AppCompatActivity() {
@@ -30,6 +34,10 @@ class MainMenuActivity : AppCompatActivity() {
         }
 
         binding.viewModel = mainMenuViewModel
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 1)
+        }
     }
 
 }

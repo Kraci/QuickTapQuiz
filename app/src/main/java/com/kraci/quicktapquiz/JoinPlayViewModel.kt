@@ -4,27 +4,21 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.*
 
-class JoinPlayViewModelFactory(private val application: Application, private val hostedGame: HostedGame): ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return JoinPlayViewModel(application, hostedGame) as T
-    }
-}
-
-class JoinPlayViewModel(application: Application, hostedGame: HostedGame): AndroidViewModel(application) {
+class JoinPlayViewModel(application: Application): AndroidViewModel(application) {
 
     private val connectionManager = JoinConnectionManager.getInstance(application)
-    private val quizGame = hostedGame
     private val _answerButtonShouldBeEnabled: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _disconnectedFromHost: LiveEvent<Any> = LiveEvent()
 
     val answerButtonShouldBeEnabled: LiveData<Boolean>
         get() = _answerButtonShouldBeEnabled
 
+    val disconnectedFromHost: LiveEvent<Any>
+        get() = _disconnectedFromHost
+
     val joinConnectionCallback = object : JoinConnectionManager.JoinConnectionCallback {
 
-        override fun onConnectionSuccessful(host: String) {
-            // toto by nemalo mat zmysel, connection uz je spojene
-            Toast.makeText(application.applicationContext, "JOIN PLAY - CONNECTION SUCCESSFUL ??? DAFUQ", Toast.LENGTH_LONG).show()
-        }
+        override fun onConnectionSuccessful(host: String) { }
 
         override fun onMessageReceived(host: String, message: String) {
             if (message == "RESET") {
@@ -35,8 +29,8 @@ class JoinPlayViewModel(application: Application, hostedGame: HostedGame): Andro
         }
 
         override fun onDisconnected(host: String) {
-            // TODO: host vypol hru, vratit sa do main menu
-            Toast.makeText(application.applicationContext, "JOIN PLAY - DISCONNECTED EVENT", Toast.LENGTH_LONG).show()
+            connectionManager.host = null
+            _disconnectedFromHost.call()
         }
 
     }
@@ -46,13 +40,17 @@ class JoinPlayViewModel(application: Application, hostedGame: HostedGame): Andro
     }
 
     fun answerButtonClicked() {
-        connectionManager.sendMessage(quizGame.hostID, "ANSWER")
+        connectionManager.sendMessageToHost("ANSWER")
         _answerButtonShouldBeEnabled.value = false
     }
 
     override fun onCleared() {
         super.onCleared()
         connectionManager.unregisterCallback(joinConnectionCallback)
+    }
+
+    fun disconnectFromHost() {
+        connectionManager.disconnectFromHost()
     }
 
 }

@@ -1,8 +1,10 @@
 package com.kraci.quicktapquiz
 
+import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.kraci.quicktapquiz.databinding.ActivityJoinPlayBinding
 
@@ -20,10 +22,28 @@ class JoinPlayActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_join_play)
 
-        joinPlayViewModel = ViewModelProviders.of(this, JoinPlayViewModelFactory(application, quizGame)).get(JoinPlayViewModel::class.java)
+        joinPlayViewModel = ViewModelProviders.of(this).get(JoinPlayViewModel::class.java).apply {
+
+            disconnectedFromHost.observe(this@JoinPlayActivity, Observer {
+                finish()
+            })
+
+        }
 
         binding.setLifecycleOwner(this)
         binding.viewModel = joinPlayViewModel
+    }
+
+    override fun onBackPressed() {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle("Do you really want to leave this game?")
+        dialog.setPositiveButton("Yes") { _, _ ->
+            joinPlayViewModel.disconnectFromHost()
+            super.onBackPressed()
+        }
+        dialog.setNegativeButton("No") { d, _ -> d.dismiss() }
+        dialog.create()
+        dialog.show()
     }
 
 }

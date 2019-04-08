@@ -42,6 +42,8 @@ class JoinConnectionManager {
 
     }
 
+    var host: String? = null
+
     fun registerCallback(callback: JoiningConnectionCallback) {
         joiningCallbacks.add(callback)
     }
@@ -72,12 +74,25 @@ class JoinConnectionManager {
                 }
 
             },
-            DiscoveryOptions.Builder().setStrategy(Strategy.P2P_STAR).build()
-        )
+            DiscoveryOptions.Builder().setStrategy(Strategy.P2P_STAR).build())
+            .addOnSuccessListener {
+                println("DISCOVERY!")
+            }
+            .addOnFailureListener {
+                println("DISCOVERY FAILURE: $it")
+            }
     }
 
     fun stopDiscovery() {
         connectionClient.stopDiscovery()
+    }
+
+    fun disconnectFromHost() {
+        val hostToDisconnect = host
+        if (hostToDisconnect != null) {
+            connectionClient.disconnectFromEndpoint(hostToDisconnect)
+            host = null
+        }
     }
 
     fun requestConnection(hostID: String, clientName: String) {
@@ -104,7 +119,10 @@ class JoinConnectionManager {
 
                 override fun onConnectionResult(p0: String, p1: ConnectionResolution) {
                     when (p1.status.statusCode) {
-                        ConnectionsStatusCodes.STATUS_OK -> joinCallbacks.forEach { callback -> callback.onConnectionSuccessful(p0) }
+                        ConnectionsStatusCodes.STATUS_OK -> joinCallbacks.forEach { callback ->
+                            host = p0
+                            callback.onConnectionSuccessful(p0)
+                        }
                         ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED -> println("FATAL (need handle) -> STATUS: REJECTED")
                         ConnectionsStatusCodes.STATUS_ERROR -> println("FATAL (need handle) -> STATUS: ERROR")
                     }
@@ -118,8 +136,11 @@ class JoinConnectionManager {
         )
     }
 
-    fun sendMessage(host: String, message: String) {
-        connectionClient.sendPayload(host, Payload.fromBytes(message.toByteArray(UTF_8)))
+    fun sendMessageToHost(message: String) {
+        val hostToMessage = host
+        if (hostToMessage != null) {
+            connectionClient.sendPayload(hostToMessage, Payload.fromBytes(message.toByteArray(UTF_8)))
+        }
     }
 
 }
