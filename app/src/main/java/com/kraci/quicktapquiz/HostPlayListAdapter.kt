@@ -1,6 +1,5 @@
 package com.kraci.quicktapquiz
 
-import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup

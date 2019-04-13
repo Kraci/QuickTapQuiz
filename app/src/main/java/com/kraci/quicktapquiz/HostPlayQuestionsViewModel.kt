@@ -66,10 +66,17 @@ class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): 
         teams.sortByDescending { it.score }
         val scores = arrayListOf<String>()
         for (team in teams) {
-            val score = "${team.teamName}      ${team.score}"
+            val score = "${team.teamName}    ${team.score}"
             scores.add(score)
         }
         return scores.toTypedArray()
+    }
+
+    fun updateScore(score: Int, position: Int) {
+        val teams = connectionManager.teams
+        teams.sortByDescending { it.score }
+        teams[position].score = score
+        connectionManager.teams = teams
     }
 
     fun updateQuestionsAfterAnswer() {

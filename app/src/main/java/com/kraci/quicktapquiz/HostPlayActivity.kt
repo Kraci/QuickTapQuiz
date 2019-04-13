@@ -44,6 +44,15 @@ class HostPlayActivity : AppCompatActivity() {
                 finish()
             })
 
+            bonusAlert.observe(this@HostPlayActivity, Observer {
+                val dialog = AlertDialog.Builder(this@HostPlayActivity)
+                dialog.setTitle("Bonus")
+                dialog.setMessage("Bonus question")
+                dialog.setNeutralButton("OK") { d, _ -> d.dismiss() }
+                dialog.create()
+                dialog.show()
+            })
+
         }
 
         binding.setLifecycleOwner(this)

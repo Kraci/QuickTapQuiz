@@ -20,6 +20,7 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
     private val _ableVoted: MutableLiveData<Boolean> = MutableLiveData(false)
     private val connectionManager = HostConnectionManager.getInstance(application)
     private val answeredTeams = mutableListOf<Team>()
+    private val _bonusAlert: LiveEvent<Any> = LiveEvent()
     private var bonusMode = false
 
     val hintClicked: LiveData<String>
@@ -28,11 +29,14 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
     val questionText: LiveData<String>
         get() = _questionText
 
-    val answerEvent: LiveEvent<Any>
+    val answerEvent: LiveData<Any>
         get() = _answerEvent
 
     val ableVoted: LiveData<Boolean>
         get() = _ableVoted
+
+    val bonusAlert: LiveData<Any>
+        get() = _bonusAlert
 
     val connectionCallback = object : HostConnectionManager.HostConnectionCallback {
 
@@ -88,8 +92,10 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
             } else {
                 connectionManager.updateScoreFor(team, gameAdapter.value)
                 _questionText.value = bonus.text
+                adapter.answeringIndex = 0
                 adapter.teams = listOf(team)
                 bonusMode = true
+                _bonusAlert.call()
             }
         } else {
             connectionManager.updateScoreFor(team, gameAdapter.value)
