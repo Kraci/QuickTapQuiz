@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".HostPlayActivity">
+        tools:context=".activities.HostPlayActivity">
 
     <data>
 
         <variable
                 name="viewModel"
-                type="com.kraci.quicktapquiz.HostPlayViewModel"/>
+                type="com.kraci.quicktapquiz.viewmodels.HostPlayViewModel"/>
 
     </data>
 

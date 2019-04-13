@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".JoinPlayActivity">
+        tools:context=".activities.JoinPlayActivity">
 
     <data>
 
         <variable
                 name="viewModel"
-                type="com.kraci.quicktapquiz.JoinPlayViewModel"/>
+                type="com.kraci.quicktapquiz.viewmodels.JoinPlayViewModel"/>
 
     </data>
 

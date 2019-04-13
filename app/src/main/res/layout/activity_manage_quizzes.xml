@@ -3,13 +3,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".ManageQuizzesActivity">
+        tools:context=".activities.ManageQuizzesActivity">
 
     <data>
 
         <variable
                 name="viewModel"
-                type="com.kraci.quicktapquiz.ManageQuizzesViewModel"/>
+                type="com.kraci.quicktapquiz.viewmodels.ManageQuizzesViewModel"/>
 
     </data>
 

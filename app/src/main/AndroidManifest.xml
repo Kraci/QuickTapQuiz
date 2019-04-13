@@ -20,7 +20,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".MainMenuActivity"
+        <activity android:name=".activities.MainMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,21 +29,21 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".HostQuizPickerActivity">
+        <activity android:name=".activities.HostQuizPickerActivity">
         </activity>
-        <activity android:name=".HostTeamsWaitingActivity">
+        <activity android:name=".activities.HostTeamsWaitingActivity">
         </activity>
-        <activity android:name=".JoinQuizChooseActivity">
+        <activity android:name=".activities.JoinQuizChooseActivity">
         </activity>
-        <activity android:name=".JoinTeamsWaitingActivity">
+        <activity android:name=".activities.JoinTeamsWaitingActivity">
         </activity>
-        <activity android:name=".JoinPlayActivity">
+        <activity android:name=".activities.JoinPlayActivity">
         </activity>
-        <activity android:name=".HostPlayQuestionsActivity">
+        <activity android:name=".activities.HostPlayQuestionsActivity">
         </activity>
-        <activity android:name=".HostPlayActivity">
+        <activity android:name=".activities.HostPlayActivity">
         </activity>
-        <activity android:name=".ManageQuizzesActivity">
+        <activity android:name=".activities.ManageQuizzesActivity">
         </activity>
     </application>
 
