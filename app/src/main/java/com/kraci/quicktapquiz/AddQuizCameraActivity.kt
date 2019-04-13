@@ -110,7 +110,178 @@ class AddQuizCameraActivity : AppCompatActivity() {
 }
         """.trimIndent()
 
-        addQuizCameraViewModel.saveParsedJSONtoDB(jsonToParse)
+        val jsonToParse2 = """
+        {
+	"status": true,
+	"message": {
+		"name": "Offline quiz",
+		"categories": [
+			{
+				"name": "category1",
+				"questions": [
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "",
+						"value": "1000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "",
+						"value": "2000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "3000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "4000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "5000",
+						"bonus": "true"
+					}
+				]
+			},
+			{
+				"name": "category2",
+				"questions": [
+					{
+						"text": "question2text",
+						"hint": "question2hint",
+						"image": "base64encode",
+						"value": "100",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "500",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "1000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "2000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "3000",
+						"bonus": "true"
+					}
+				]
+			},
+			{
+				"name": "category3",
+				"questions": [
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "1000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "2000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "3000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "4000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "5000",
+						"bonus": "true"
+					}
+				]
+			},
+			{
+				"name": "category4",
+				"questions": [
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "1000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "2000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "3000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "4000",
+						"bonus": "false"
+					},
+					{
+						"text": "question1text",
+						"hint": "question1hint",
+						"image": "base64encode",
+						"value": "5000",
+						"bonus": "true"
+					}
+				]
+			}
+		]
+	}
+}
+        """.trimIndent()
+
+//        addQuizCameraViewModel.saveParsedJSONtoDB(jsonToParse2)
 
     }
 }

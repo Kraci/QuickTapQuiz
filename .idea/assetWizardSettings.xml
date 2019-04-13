@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_pan_tool_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/image/ic_image_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -29,11 +29,11 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="96" />
-                            <entry key="outputName" value="ic_answer_white_96dp" />
+                            <entry key="height" value="36" />
+                            <entry key="outputName" value="ic_image_white_36dp" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$USER_HOME$" />
-                            <entry key="width" value="96" />
+                            <entry key="width" value="36" />
                           </map>
                         </option>
                       </PersistentState>

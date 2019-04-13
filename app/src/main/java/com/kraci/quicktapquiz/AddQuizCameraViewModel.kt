@@ -1,15 +1,20 @@
 package com.kraci.quicktapquiz
 
 import android.app.Application
+import android.os.StrictMode
 import androidx.lifecycle.AndroidViewModel
 import com.beust.klaxon.Klaxon
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.Main
+import org.json.JSONException
+import java.lang.Exception
+import java.net.URL
 import kotlin.coroutines.experimental.CoroutineContext
 
 class QuizJSON(val name: String, val categories: List<CategoriesJSON>)
 class CategoriesJSON(val name: String, val questions: List<QuestionJSON>)
 class QuestionJSON(val text: String, val hint: String, val image: String, val value: String, val bonus: String)
+class ResponseJSON(val status: Boolean, val message: QuizJSON)
 
 class AddQuizCameraViewModel(application: Application): AndroidViewModel(application) {
 
@@ -22,17 +27,32 @@ class AddQuizCameraViewModel(application: Application): AndroidViewModel(applica
     init {
         val db = QuizDatabase.getDatabase(application, scope)
         repository = QuizRepository(db.quizDao(), db.categoryDao(), db.questionDao(), db.categoryQuestionDao(), db.quizGameDao())
+        request()
     }
 
-    fun saveParsedJSONtoDB(json: String) {
-        val quizJSON = parseJSON(json)
-        if (quizJSON != null) {
-            addQuiz(quizJSON)
+    fun request() = scope.launch(Dispatchers.IO) {
+        val text = URL("http://quicktapquiz.codelabs.sk/api/quiz.php?code=1").readText()
+        saveParsedJSONtoDB(text)
+
+//        try {
+//            val text = URL("http://quicktapquiz.codelabs.sk/api/quiz.php?code=1").readText()
+//            saveParsedJSONtoDB(text)
+//        } catch (e: JSONException) {
+//            e.printStackTrace()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+    }
+
+    private fun saveParsedJSONtoDB(json: String) {
+        val responseJSON = parseJSON(json)
+        if (responseJSON != null) {
+            addQuiz(responseJSON.message)
         }
     }
 
-    private fun parseJSON(json: String): QuizJSON? {
-        return Klaxon().parse<QuizJSON>(json)
+    private fun parseJSON(json: String): ResponseJSON? {
+        return Klaxon().parse<ResponseJSON>(json)
     }
 
     private fun addQuiz(quizJSON: QuizJSON) = scope.launch(Dispatchers.IO) {
