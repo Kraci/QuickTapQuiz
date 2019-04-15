@@ -26,6 +26,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:setAdapter="@{viewModel.adapter}"
+                android:keepScreenOn="true"
                 tools:listitem="@layout/recyclerview_item"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

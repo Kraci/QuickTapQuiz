@@ -164,7 +164,7 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
                 }
             }
             if (it.isEmpty()) {
-                //allAreReady = false // FIXME: uncomment
+                allAreReady = false // FIXME: uncomment
             }
             _startQuizButtonShouldBeActive.value = allAreReady
 
@@ -197,8 +197,7 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
         if (quizGameDB.count() < 1) { return null }
         val quizGameName = quizGameDB[0].quiz_name
         val categories = mutableListOf<CategoryGame>()
-        var actualCategory =
-            CategoryGame(quizGameDB[0].category_name, mutableListOf())
+        var actualCategory = CategoryGame(quizGameDB[0].category_name, mutableListOf())
         var actualQuestions = mutableListOf<QuestionGame>()
 
         for (quizGameRow in quizGameDB) {

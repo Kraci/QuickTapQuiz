@@ -35,7 +35,12 @@ class ManageQuizzesActivity : AppCompatActivity() {
                 input.inputType = InputType.TYPE_CLASS_NUMBER
                 dialog.setView(input)
                 dialog.setPositiveButton("OK") { d, _ ->
-                    request(input.text.toString().toInt())
+                    val code = input.text.toString().toInt()
+                    if (code == 0) {
+                        Toast.makeText(baseContext, "Not valid code.", Toast.LENGTH_LONG).show()
+                    } else {
+                        request(code)
+                    }
                     d.dismiss()
                 }
                 dialog.setNegativeButton("Cancel") { d, _ -> d.dismiss()}

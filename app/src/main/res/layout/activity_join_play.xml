@@ -28,6 +28,7 @@
                 android:enabled="@{viewModel.answerButtonShouldBeEnabled}"
                 android:onClickListener="@{() -> viewModel.answerButtonClicked()}"
                 android:background="@{viewModel.answerButtonShouldBeEnabled ? @drawable/circle_button : @drawable/circle_button_disabled}"
+                android:keepScreenOn="true"
                 android:src="@drawable/ic_answer_white_96dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

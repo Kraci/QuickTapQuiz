@@ -15,7 +15,6 @@ import kotlin.coroutines.experimental.CoroutineContext
 class QuizJSON(val name: String, val categories: List<CategoriesJSON>)
 class CategoriesJSON(val name: String, val questions: List<QuestionJSON>)
 class QuestionJSON(val text: String, val hint: String, val image: String, val value: String, val bonus: String)
-class ResponseJSON(val status: Boolean, val message: QuizJSON)
 
 class ManageQuizzesViewModel(application: Application): AndroidViewModel(application),
     ManageQuizzesListAdapter.ClickListener {
@@ -70,22 +69,13 @@ class ManageQuizzesViewModel(application: Application): AndroidViewModel(applica
     fun request(code: Int) = scope.launch(Dispatchers.IO) {
         val text = URL("http://quicktapquiz.codelabs.sk/api/quiz.php?code=$code").readText()
         saveParsedJSONtoDB(text)
-
-//        try {
-//            val text = URL("http://quicktapquiz.codelabs.sk/api/quiz.php?code=1").readText()
-//            saveParsedJSONtoDB(text)
-//        } catch (e: JSONException) {
-//            e.printStackTrace()
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
     }
 
     private fun saveParsedJSONtoDB(json: String) {
-        val responseJSON = parseJSON(json)
-        if (responseJSON != null) {
-            if (responseJSON.status) {
-                addQuiz(responseJSON.message)
+        val quiz = parseJSON(json)
+        if (quiz != null) {
+            if (quiz.name != "INVALID") {
+                addQuiz(quiz)
             } else {
                 scope.launch(context = Dispatchers.Main) {
                     _notValidCodeEvent.call()
@@ -94,8 +84,8 @@ class ManageQuizzesViewModel(application: Application): AndroidViewModel(applica
         }
     }
 
-    private fun parseJSON(json: String): ResponseJSON? {
-        return Klaxon().parse<ResponseJSON>(json)
+    private fun parseJSON(json: String): QuizJSON? {
+        return Klaxon().parse<QuizJSON>(json)
     }
 
     private fun addQuiz(quizJSON: QuizJSON) = scope.launch(Dispatchers.IO) {
