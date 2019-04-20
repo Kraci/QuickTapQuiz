@@ -8,3 +8,4 @@
 .idea/
 *.iws
 /out/
+server/db/_database.php
