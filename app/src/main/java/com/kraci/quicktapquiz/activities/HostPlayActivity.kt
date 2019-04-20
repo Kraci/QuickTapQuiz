@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kraci.quicktapquiz.R
 import com.kraci.quicktapquiz.databinding.ActivityHostPlayBinding
+import com.kraci.quicktapquiz.utils.IntentExtras
 import com.kraci.quicktapquiz.viewmodels.GameAdapter
 import com.kraci.quicktapquiz.viewmodels.HostPlayViewModel
 import com.kraci.quicktapquiz.viewmodels.HostPlayViewModelFactory
@@ -29,8 +30,8 @@ class HostPlayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        gameAdapter = intent.getParcelableExtra("GameAdapter")
-        val bonus = intent.getParcelableExtra<QuestionGame?>("GameAdapterBonus")
+        gameAdapter = intent.getParcelableExtra(IntentExtras.GAME_ADAPTER)
+        val bonus = intent.getParcelableExtra<QuestionGame?>(IntentExtras.GAME_BONUS)
 
         supportActionBar?.title = "${gameAdapter.category} - ${gameAdapter.value}"
 

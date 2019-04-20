@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kraci.quicktapquiz.R
 import com.kraci.quicktapquiz.databinding.ActivityJoinQuizChooseBinding
+import com.kraci.quicktapquiz.utils.IntentExtras
 import com.kraci.quicktapquiz.viewmodels.JoinQuizChooseViewModel
 
 class JoinQuizChooseActivity : AppCompatActivity() {
@@ -28,7 +29,7 @@ class JoinQuizChooseActivity : AppCompatActivity() {
 
             hostGamePicked.observe(this@JoinQuizChooseActivity, Observer {
                 val intent = Intent(this@JoinQuizChooseActivity, JoinTeamsWaitingActivity::class.java)
-                intent.putExtra("QuizGame", it)
+                intent.putExtra(IntentExtras.HOSTED_GAME, it)
                 startActivity(intent)
                 finish()
             })

@@ -4,7 +4,6 @@ import android.app.Application
 import android.os.Parcelable
 import androidx.lifecycle.*
 import com.google.android.gms.nearby.connection.*
-import com.kraci.quicktapquiz.activities.QuizInfo
 import com.kraci.quicktapquiz.adapters.HostTeamsWaitingListAdapter
 import com.kraci.quicktapquiz.connections.HostConnectionManager
 import com.kraci.quicktapquiz.connections.JoinConnectionManager

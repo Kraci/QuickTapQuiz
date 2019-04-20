@@ -2,7 +2,6 @@ package com.kraci.quicktapquiz.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.kraci.quicktapquiz.database.Quiz
 
 @Dao
 interface QuizDao {

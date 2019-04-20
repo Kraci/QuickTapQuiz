@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kraci.quicktapquiz.R
 import com.kraci.quicktapquiz.databinding.ActivityHostTeamsWaitingBinding
+import com.kraci.quicktapquiz.utils.IntentExtras
 import com.kraci.quicktapquiz.viewmodels.HostTeamsWaitingViewModel
 import com.kraci.quicktapquiz.viewmodels.HostTeamsWaitingViewModelFactory
 
@@ -28,7 +29,7 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
         hostTeamsWaitingViewModel = ViewModelProviders.of(this,
             HostTeamsWaitingViewModelFactory(
                 application,
-                intent.getParcelableExtra("QuizInfo")
+                intent.getParcelableExtra(IntentExtras.QUIZ_INFO)
             )
         ).get(HostTeamsWaitingViewModel::class.java).apply {
 
@@ -37,7 +38,7 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
                     Toast.makeText(baseContext, "Quiz is not valid.", Toast.LENGTH_LONG).show()
                 } else {
                     val intent = Intent(this@HostTeamsWaitingActivity, HostPlayQuestionsActivity::class.java)
-                    intent.putExtra("QuizGame", quizGame)
+                    intent.putExtra(IntentExtras.QUIZ_GAME, quizGame)
                     startActivity(intent)
                     finish()
                 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kraci.quicktapquiz.R
 import com.kraci.quicktapquiz.databinding.ActivityJoinTeamsWaitingBinding
+import com.kraci.quicktapquiz.utils.IntentExtras
 import com.kraci.quicktapquiz.viewmodels.JoinTeamsWaitingViewModel
 import com.kraci.quicktapquiz.viewmodels.JoinTeamsWaitingViewModelFactory
 
@@ -27,13 +28,13 @@ class JoinTeamsWaitingActivity : AppCompatActivity() {
         joinTeamsWaitingViewModel = ViewModelProviders.of(this,
             JoinTeamsWaitingViewModelFactory(
                 application,
-                intent.getParcelableExtra("QuizGame")
+                intent.getParcelableExtra(IntentExtras.HOSTED_GAME)
             )
         ).get(JoinTeamsWaitingViewModel::class.java).apply {
 
             startQuizEvent.observe(this@JoinTeamsWaitingActivity, Observer {
                 val intent = Intent(this@JoinTeamsWaitingActivity, JoinPlayActivity::class.java)
-                intent.putExtra("QuizGame", it)
+                intent.putExtra(IntentExtras.HOSTED_GAME, it)
                 startActivity(intent)
                 finish()
             })

@@ -1,6 +1,7 @@
 package com.kraci.quicktapquiz.viewmodels
 
 import android.app.Application
+import android.os.Parcelable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.kraci.quicktapquiz.adapters.HostQuizPickerListAdapter
@@ -8,9 +9,13 @@ import com.kraci.quicktapquiz.database.Quiz
 import com.kraci.quicktapquiz.database.QuizDatabase
 import com.kraci.quicktapquiz.database.QuizRepository
 import com.kraci.quicktapquiz.utils.LiveEvent
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.Main
 import kotlin.coroutines.experimental.CoroutineContext
+
+@Parcelize
+data class QuizInfo(val id: Int, val name: String) : Parcelable
 
 class HostQuizPickerViewModel(application: Application) : AndroidViewModel(application), HostQuizPickerListAdapter.ClickListener {
 

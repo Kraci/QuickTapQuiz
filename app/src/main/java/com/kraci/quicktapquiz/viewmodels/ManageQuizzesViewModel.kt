@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.beust.klaxon.Klaxon
 import com.kraci.quicktapquiz.adapters.ManageQuizzesListAdapter
 import com.kraci.quicktapquiz.database.*
+import com.kraci.quicktapquiz.utils.APIEndpoints
 import com.kraci.quicktapquiz.utils.LiveEvent
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.experimental.*
@@ -67,7 +68,8 @@ class ManageQuizzesViewModel(application: Application): AndroidViewModel(applica
     }
 
     fun request(code: Int) = scope.launch(Dispatchers.IO) {
-        val text = URL("http://quicktapquiz.codelabs.sk/api/quiz.php?code=$code").readText()
+        val url = "${APIEndpoints.CODE_GET_REQUEST}$code"
+        val text = URL(url).readText()
         saveParsedJSONtoDB(text)
     }
 

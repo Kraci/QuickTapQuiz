@@ -2,7 +2,6 @@ package com.kraci.quicktapquiz.database
 
 import androidx.lifecycle.LiveData
 import androidx.annotation.WorkerThread
-import com.kraci.quicktapquiz.database.*
 
 class QuizRepository(private val quizDao: QuizDao,
                      private val categoryDao: CategoryDao,

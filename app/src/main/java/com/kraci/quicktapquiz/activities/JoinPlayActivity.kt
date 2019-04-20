@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.kraci.quicktapquiz.R
 import com.kraci.quicktapquiz.databinding.ActivityJoinPlayBinding
+import com.kraci.quicktapquiz.utils.IntentExtras
 import com.kraci.quicktapquiz.viewmodels.HostedGame
 import com.kraci.quicktapquiz.viewmodels.JoinPlayViewModel
 
@@ -19,9 +20,9 @@ class JoinPlayActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val quizGame = intent.getParcelableExtra<HostedGame>("QuizGame")
+        val hostedQuizGame = intent.getParcelableExtra<HostedGame>(IntentExtras.HOSTED_GAME)
 
-        supportActionBar?.title = quizGame.teamName
+        supportActionBar?.title = hostedQuizGame.teamName
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_join_play)
 
