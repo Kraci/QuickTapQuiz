@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kraci.quicktapquiz.R
 import com.kraci.quicktapquiz.databinding.ActivityManageQuizzesBinding
+import com.kraci.quicktapquiz.utils.APIEndpoints
 import com.kraci.quicktapquiz.viewmodels.ManageQuizzesViewModel
 
 class ManageQuizzesActivity : AppCompatActivity() {
@@ -37,6 +38,7 @@ class ManageQuizzesActivity : AppCompatActivity() {
                 }
                 val dialog = AlertDialog.Builder(this@ManageQuizzesActivity)
                 dialog.setTitle("Quiz code")
+                dialog.setMessage("Create quiz at ${APIEndpoints.SERVER_URL} and obtain code.")
                 val input = EditText(this@ManageQuizzesActivity)
                 input.inputType = InputType.TYPE_CLASS_NUMBER
                 dialog.setView(input)
