@@ -18,6 +18,10 @@ class HostConnectionManager {
 
     companion object {
 
+        const val START = "START"
+        const val RESET = "RESET"
+        const val DISABLE = "DISABLE"
+
         @Volatile
         private var INSTANCE: HostConnectionManager? = null
 

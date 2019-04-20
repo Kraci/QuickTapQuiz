@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -16,6 +17,8 @@ import com.kraci.quicktapquiz.viewmodels.GameAdapter
 import com.kraci.quicktapquiz.viewmodels.HostPlayViewModel
 import com.kraci.quicktapquiz.viewmodels.HostPlayViewModelFactory
 import com.kraci.quicktapquiz.viewmodels.QuestionGame
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 
 class HostPlayActivity : AppCompatActivity() {
 
@@ -60,6 +63,11 @@ class HostPlayActivity : AppCompatActivity() {
                 dialog.show()
             })
 
+            imageToLoad.observe(this@HostPlayActivity, Observer {
+                val imageView = findViewById<ImageView>(R.id.question_image)
+                Picasso.get().load(it).networkPolicy(NetworkPolicy.OFFLINE).into(imageView)
+            })
+
         }
 
         binding.setLifecycleOwner(this)
@@ -77,7 +85,7 @@ class HostPlayActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item != null && item.itemId == R.id.quiz_image) {
-            // handle image
+            hostPlayViewModel.imageClicked()
         }
         return super.onOptionsItemSelected(item)
     }

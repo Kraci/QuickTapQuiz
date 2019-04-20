@@ -3,25 +3,23 @@ package com.kraci.quicktapquiz.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.kraci.quicktapquiz.adapters.HostQuizPickerListAdapter
 import com.kraci.quicktapquiz.database.Quiz
 import com.kraci.quicktapquiz.database.QuizDatabase
 import com.kraci.quicktapquiz.database.QuizRepository
+import com.kraci.quicktapquiz.utils.LiveEvent
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.Main
 import kotlin.coroutines.experimental.CoroutineContext
 
-class HostQuizPickerViewModel(application: Application) : AndroidViewModel(application),
-    HostQuizPickerListAdapter.ClickListener {
+class HostQuizPickerViewModel(application: Application) : AndroidViewModel(application), HostQuizPickerListAdapter.ClickListener {
 
     val adapter = HostQuizPickerListAdapter()
     val allQuizzes: LiveData<List<Quiz>>
-
-    private val _quizItemClicked: MutableLiveData<Quiz> = MutableLiveData()
     val quizItemClicked: LiveData<Quiz>
         get() = _quizItemClicked
 
+    private val _quizItemClicked: LiveEvent<Quiz> = LiveEvent()
     private var parentJob = Job()
     private val coroutineContext: CoroutineContext
         get() = parentJob + Dispatchers.Main
@@ -51,10 +49,6 @@ class HostQuizPickerViewModel(application: Application) : AndroidViewModel(appli
 
     override fun onItemClick(quiz: Quiz) {
         _quizItemClicked.value = quiz
-    }
-
-    fun insert(quiz: Quiz) = scope.launch(Dispatchers.IO) {
-        repository.insert(quiz)
     }
 
 }

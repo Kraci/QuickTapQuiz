@@ -2,6 +2,7 @@ package com.kraci.quicktapquiz.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.kraci.quicktapquiz.connections.HostConnectionManager
 import com.kraci.quicktapquiz.connections.JoinConnectionManager
 import com.kraci.quicktapquiz.utils.LiveEvent
 
@@ -9,8 +10,7 @@ class JoinPlayViewModel(application: Application): AndroidViewModel(application)
 
     private val connectionManager = JoinConnectionManager.getInstance(application)
     private val _answerButtonShouldBeEnabled: MutableLiveData<Boolean> = MutableLiveData(false)
-    private val _disconnectedFromHost: LiveEvent<Any> =
-        LiveEvent()
+    private val _disconnectedFromHost: LiveEvent<Any> = LiveEvent()
 
     val answerButtonShouldBeEnabled: LiveData<Boolean>
         get() = _answerButtonShouldBeEnabled
@@ -23,9 +23,9 @@ class JoinPlayViewModel(application: Application): AndroidViewModel(application)
         override fun onConnectionSuccessful(host: String) { }
 
         override fun onMessageReceived(host: String, message: String) {
-            if (message == "RESET") {
+            if (message == HostConnectionManager.RESET) {
                 _answerButtonShouldBeEnabled.value = true
-            } else if (message == "DISABLE") {
+            } else if (message == HostConnectionManager.DISABLE) {
                 _answerButtonShouldBeEnabled.value = false
             }
         }
@@ -42,7 +42,7 @@ class JoinPlayViewModel(application: Application): AndroidViewModel(application)
     }
 
     fun answerButtonClicked() {
-        connectionManager.sendMessageToHost("ANSWER")
+        connectionManager.sendMessageToHost(JoinConnectionManager.ANSWER)
         _answerButtonShouldBeEnabled.value = false
     }
 

@@ -21,6 +21,9 @@ class JoinConnectionManager {
 
     companion object {
 
+        const val READY = "READY"
+        const val ANSWER = "ANSWER"
+
         @Volatile
         private var INSTANCE: JoinConnectionManager? = null
 

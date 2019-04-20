@@ -53,14 +53,14 @@ public abstract class QuizDatabase : RoomDatabase() {
 
     private class QuizDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
-        override fun onOpen(db: SupportSQLiteDatabase) {
-            super.onOpen(db)
-            INSTANCE?.let { database ->
-                scope.launch(Dispatchers.IO) {
-                    populateDatabase(database.quizDao(), database.categoryDao(), database.questionDao(), database.categoryQuestionDao())
-                }
-            }
-        }
+//        override fun onOpen(db: SupportSQLiteDatabase) {
+//            super.onOpen(db)
+//            INSTANCE?.let { database ->
+//                scope.launch(Dispatchers.IO) {
+//                    populateDatabase(database.quizDao(), database.categoryDao(), database.questionDao(), database.categoryQuestionDao())
+//                }
+//            }
+//        }
 
 //        override fun onCreate(db: SupportSQLiteDatabase) {
 //            super.onCreate(db)

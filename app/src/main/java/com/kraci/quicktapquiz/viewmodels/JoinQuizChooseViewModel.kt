@@ -18,7 +18,7 @@ class JoinQuizChooseViewModel(application: Application) : AndroidViewModel(appli
     val adapter = JoinQuizChooseAdapter()
 
     private val _hostedGames: MutableLiveData<List<HostedGame>> = MutableLiveData()
-    private val _hostGamePicked: MutableLiveData<HostedGame> = MutableLiveData()
+    private val _hostGamePicked: LiveEvent<HostedGame> = LiveEvent()
     private val _emptyNameEvent: LiveEvent<Any> = LiveEvent()
     private val connectionManager = JoinConnectionManager.getInstance(application)
     private var teamName = ""

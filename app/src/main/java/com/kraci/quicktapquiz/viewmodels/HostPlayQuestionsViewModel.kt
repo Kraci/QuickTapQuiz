@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.lifecycle.*
 import com.kraci.quicktapquiz.connections.HostConnectionManager
 import com.kraci.quicktapquiz.adapters.HostPlayQuestionsListAdapter
+import com.kraci.quicktapquiz.utils.LiveEvent
 import kotlinx.android.parcel.Parcelize
 
 enum class GameAdapterType {
@@ -23,7 +24,7 @@ class HostPlayQuestionsViewModelFactory(private val application: Application, pr
 class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): AndroidViewModel(application),
     HostPlayQuestionsListAdapter.ClickListener {
 
-    private val _questionChoosed: MutableLiveData<GameAdapter> = MutableLiveData()
+    private val _questionChoosed: LiveEvent<GameAdapter> = LiveEvent()
     private val connectionManager = HostConnectionManager.getInstance(application)
     private val bonuses = mutableMapOf<String, QuestionGame>()
     private var choosedQuestionIndex = -1
@@ -72,7 +73,6 @@ class HostPlayQuestionsViewModel(application: Application, quizGame: QuizGame): 
 
     override fun onQuestionClick(question: GameAdapter, position: Int) {
         choosedQuestionIndex = position
-
         val items = adapter.items
         val sameCategoryItems = items.count { it.category == question.category }
         if (sameCategoryItems == 1) {

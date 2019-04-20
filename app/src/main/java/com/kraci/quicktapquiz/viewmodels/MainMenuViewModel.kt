@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Button
-import androidx.lifecycle.MutableLiveData
 import com.kraci.quicktapquiz.activities.HostQuizPickerActivity
 import com.kraci.quicktapquiz.activities.JoinQuizChooseActivity
 import com.kraci.quicktapquiz.activities.ManageQuizzesActivity
+import com.kraci.quicktapquiz.utils.LiveEvent
 
 class MainMenuViewModel : ViewModel() {
 
-    private val _clickEvent: MutableLiveData<Class<out AppCompatActivity>> = MutableLiveData()
+    private val _clickEvent: LiveEvent<Class<out AppCompatActivity>> = LiveEvent()
 
     val clickEvent: LiveData<Class<out AppCompatActivity>>
         get() = _clickEvent

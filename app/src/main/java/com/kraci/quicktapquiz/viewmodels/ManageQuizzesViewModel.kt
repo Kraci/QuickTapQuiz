@@ -7,6 +7,7 @@ import com.beust.klaxon.Klaxon
 import com.kraci.quicktapquiz.adapters.ManageQuizzesListAdapter
 import com.kraci.quicktapquiz.database.*
 import com.kraci.quicktapquiz.utils.LiveEvent
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.experimental.*
 import kotlinx.coroutines.experimental.android.Main
 import java.net.URL
@@ -29,13 +30,12 @@ class ManageQuizzesViewModel(application: Application): AndroidViewModel(applica
     private val repository: QuizRepository
 
     private val _addQuizEvent: LiveEvent<Any> = LiveEvent()
-    private val _notValidCodeEvent: LiveEvent<Any> =
-        LiveEvent()
+    private val _notValidCodeEvent: LiveEvent<String> = LiveEvent()
 
     val addQuizEvent: LiveData<Any>
         get() = _addQuizEvent
 
-    val notValidCodeEvent: LiveData<Any>
+    val notValidCodeEvent: LiveData<String>
         get() = _notValidCodeEvent
 
     init {
@@ -78,7 +78,7 @@ class ManageQuizzesViewModel(application: Application): AndroidViewModel(applica
                 addQuiz(quiz)
             } else {
                 scope.launch(context = Dispatchers.Main) {
-                    _notValidCodeEvent.call()
+                    _notValidCodeEvent.value = "Not a valid code."
                 }
             }
         }
@@ -115,6 +115,10 @@ class ManageQuizzesViewModel(application: Application): AndroidViewModel(applica
                         bonus
                     )
                 repository.insert(categoryQuestion)
+
+                if (!question.image.isEmpty()) {
+                    Picasso.get().load(question.image).fetch()
+                }
             }
         }
     }

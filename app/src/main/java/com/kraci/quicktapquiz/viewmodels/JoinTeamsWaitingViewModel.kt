@@ -3,6 +3,7 @@ package com.kraci.quicktapquiz.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.kraci.quicktapquiz.adapters.HostTeamsWaitingListAdapter
+import com.kraci.quicktapquiz.connections.HostConnectionManager
 import com.kraci.quicktapquiz.connections.JoinConnectionManager
 import com.kraci.quicktapquiz.utils.LiveEvent
 
@@ -16,7 +17,7 @@ class JoinTeamsWaitingViewModel(application: Application, private val hostGame: 
 
     private val _teamsJoined: MutableLiveData<List<Team>> = MutableLiveData()
     private val _readyButtonShouldBeActive: MutableLiveData<Boolean> = MutableLiveData(false)
-    private val _startQuizEvent: MutableLiveData<HostedGame> = MutableLiveData()
+    private val _startQuizEvent: LiveEvent<HostedGame> = LiveEvent()
     private val _diconnectedFromHost: LiveEvent<Any> =
         LiveEvent()
     private val connectionManager = JoinConnectionManager.getInstance(application)
@@ -45,7 +46,7 @@ class JoinTeamsWaitingViewModel(application: Application, private val hostGame: 
         }
 
         override fun onMessageReceived(host: String, message: String) {
-            if (message == "START") {
+            if (message == HostConnectionManager.START) {
                 _startQuizEvent.value = hostGame
             } else {
                 _teamsJoined.value = parseTeamsFrom(message)
@@ -71,7 +72,7 @@ class JoinTeamsWaitingViewModel(application: Application, private val hostGame: 
 
     fun readyButtonClicked() {
         _readyButtonShouldBeActive.value = false
-        connectionManager.sendMessageToHost("READY")
+        connectionManager.sendMessageToHost(JoinConnectionManager.READY)
     }
 
     fun parseTeamsFrom(message: String): List<Team> {

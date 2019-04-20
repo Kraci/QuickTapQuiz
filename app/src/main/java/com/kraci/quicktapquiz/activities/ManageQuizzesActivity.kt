@@ -1,6 +1,8 @@
 package com.kraci.quicktapquiz.activities
 
 import android.app.AlertDialog
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -29,6 +31,10 @@ class ManageQuizzesActivity : AppCompatActivity() {
         manageQuizzesViewModel = ViewModelProviders.of(this).get(ManageQuizzesViewModel::class.java).apply {
 
             addQuizEvent.observe(this@ManageQuizzesActivity, Observer {
+                if (!availableInternet()) {
+                    Toast.makeText(baseContext, "Internet connection is needed.", Toast.LENGTH_LONG).show()
+                    return@Observer
+                }
                 val dialog = AlertDialog.Builder(this@ManageQuizzesActivity)
                 dialog.setTitle("Quiz code")
                 val input = EditText(this@ManageQuizzesActivity)
@@ -36,11 +42,7 @@ class ManageQuizzesActivity : AppCompatActivity() {
                 dialog.setView(input)
                 dialog.setPositiveButton("OK") { d, _ ->
                     val code = input.text.toString().toInt()
-                    if (code == 0) {
-                        Toast.makeText(baseContext, "Not valid code.", Toast.LENGTH_LONG).show()
-                    } else {
-                        request(code)
-                    }
+                    request(code)
                     d.dismiss()
                 }
                 dialog.setNegativeButton("Cancel") { d, _ -> d.dismiss()}
@@ -49,7 +51,7 @@ class ManageQuizzesActivity : AppCompatActivity() {
             })
 
             notValidCodeEvent.observe(this@ManageQuizzesActivity, Observer {
-                Toast.makeText(baseContext, "Not valid code.", Toast.LENGTH_LONG).show()
+                Toast.makeText(baseContext, it, Toast.LENGTH_LONG).show()
             })
 
         }
@@ -58,4 +60,11 @@ class ManageQuizzesActivity : AppCompatActivity() {
         binding.recyclerView.setHasFixedSize(true)
         binding.viewModel = manageQuizzesViewModel
     }
+
+    fun availableInternet(): Boolean {
+        val connectivityManager = baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
 }

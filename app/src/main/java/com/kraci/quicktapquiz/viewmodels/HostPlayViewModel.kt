@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.google.android.gms.nearby.connection.ConnectionInfo
 import com.kraci.quicktapquiz.adapters.HostPlayListAdapter
 import com.kraci.quicktapquiz.connections.HostConnectionManager
+import com.kraci.quicktapquiz.connections.JoinConnectionManager
 import com.kraci.quicktapquiz.utils.LiveEvent
 
 class HostPlayViewModelFactory(private val application: Application, private val gameAdapter: GameAdapter, private val bonus: QuestionGame?) : ViewModelProvider.Factory {
@@ -18,10 +19,13 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
 
     val adapter = HostPlayListAdapter(application.applicationContext)
 
-    private val _hintClicked: MutableLiveData<String> = MutableLiveData()
+    private val _hintClicked: LiveEvent<String> = LiveEvent()
     private val _questionText: MutableLiveData<String> = MutableLiveData()
     private val _answerEvent: LiveEvent<Any> = LiveEvent()
     private val _ableVoted: MutableLiveData<Boolean> = MutableLiveData(false)
+    private val _imageToLoad: MutableLiveData<String> = MutableLiveData()
+    private val _imageVisible: MutableLiveData<Boolean> = MutableLiveData(false)
+    private var imageLoaded = false
     private val connectionManager = HostConnectionManager.getInstance(application)
     private val answeredTeams = mutableListOf<Team>()
     private val _bonusAlert: LiveEvent<Any> = LiveEvent()
@@ -35,6 +39,12 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
 
     val answerEvent: LiveData<Any>
         get() = _answerEvent
+
+    val imageToLoad: LiveData<String>
+        get() = _imageToLoad
+
+    val imageVisible: LiveData<Boolean>
+        get() = _imageVisible
 
     val ableVoted: LiveData<Boolean>
         get() = _ableVoted
@@ -51,7 +61,7 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
         override fun onDisconnected(client: String) { }
 
         override fun onPayloadReceived(client: String, message: String) {
-            if (message == "ANSWER") {
+            if (message == JoinConnectionManager.ANSWER) {
                 val team = connectionManager.teamFor(client)
                 if (team != null) {
                     answeredTeams.add(team)
@@ -71,10 +81,10 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
     fun ableVoteClicked() {
         val voted = _ableVoted.value
         if (voted != null && voted) {
-            connectionManager.sendMessage(message = "DISABLE")
+            disableVote()
             _answerEvent.call()
         } else {
-            connectionManager.sendMessage(message = "RESET")
+            connectionManager.sendMessage(message = HostConnectionManager.RESET)
             _ableVoted.value = true
         }
     }
@@ -87,8 +97,25 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
         }
     }
 
+    fun imageClicked() {
+        val visible = _imageVisible.value
+        if (visible != null && visible) {
+            _imageVisible.value = false
+        } else {
+            if (!imageLoaded) {
+                if (bonusMode && bonus != null) {
+                    _imageToLoad.value = bonus.image
+                } else {
+                    _imageToLoad.value = gameAdapter.image
+                }
+                imageLoaded = true
+            }
+            _imageVisible.value = true
+        }
+    }
+
     override fun onCorrectClick(team: Team) {
-        connectionManager.sendMessage(message = "DISABLE")
+        disableVote()
         if (bonus != null) {
             if (bonusMode) {
                 connectionManager.updateScoreFor(team, bonus.value)
@@ -118,7 +145,7 @@ class HostPlayViewModel(application: Application, private val gameAdapter: GameA
     }
 
     fun disableVote() {
-        connectionManager.sendMessage(message = "DISABLE")
+        connectionManager.sendMessage(message = HostConnectionManager.DISABLE)
     }
 
     override fun onCleared() {

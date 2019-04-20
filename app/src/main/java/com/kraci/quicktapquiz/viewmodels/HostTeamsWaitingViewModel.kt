@@ -7,6 +7,7 @@ import com.google.android.gms.nearby.connection.*
 import com.kraci.quicktapquiz.activities.QuizInfo
 import com.kraci.quicktapquiz.adapters.HostTeamsWaitingListAdapter
 import com.kraci.quicktapquiz.connections.HostConnectionManager
+import com.kraci.quicktapquiz.connections.JoinConnectionManager
 import com.kraci.quicktapquiz.database.QuizDatabase
 import com.kraci.quicktapquiz.database.QuizGameDao
 import com.kraci.quicktapquiz.database.QuizRepository
@@ -69,7 +70,7 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
     val callback = object : HostConnectionManager.HostConnectionCallback {
 
         override fun onPayloadReceived(client: String, message: String) {
-            if (message == "READY") {
+            if (message == JoinConnectionManager.READY) {
                 val teams = _teamsJoined.value
                 if (teams != null) {
                     for (team in teams) {
@@ -189,7 +190,7 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
         if (teams != null) {
             connectionManager.teams = teams.toMutableList()
         }
-        connectionManager.sendMessage(message = "START")
+        connectionManager.sendMessage(message = HostConnectionManager.START)
         _startQuizButton.call()
     }
 
@@ -238,13 +239,3 @@ class HostTeamsWaitingViewModel(application: Application, quizInfo: QuizInfo) : 
     }
 
 }
-
-//    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-//    fun onCreate() {
-//        startAdvertise()
-//    }
-
-//    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-//    fun onDestroy() {
-//        Nearby.getConnectionsClient(_application.applicationContext).stopAdvertising()
-//    }

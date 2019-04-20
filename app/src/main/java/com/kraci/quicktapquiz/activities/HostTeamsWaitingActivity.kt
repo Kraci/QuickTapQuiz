@@ -28,7 +28,7 @@ class HostTeamsWaitingActivity : AppCompatActivity() {
         hostTeamsWaitingViewModel = ViewModelProviders.of(this,
             HostTeamsWaitingViewModelFactory(
                 application,
-                intent.getParcelableExtra<QuizInfo>("QuizInfo")
+                intent.getParcelableExtra("QuizInfo")
             )
         ).get(HostTeamsWaitingViewModel::class.java).apply {
 

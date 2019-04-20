@@ -9,4 +9,5 @@
 	<color name="cellBackground">#1565C0</color>
 	<color name="cellBackgroundDarker">#002D72</color>
 	<color name="cellText">#FFFFFF</color>
+	<color name="imageBackground">#FFFFFF</color>
 </resources>
