@@ -1,6 +1,6 @@
 <?php
 
-require_once "db/database.php";
+require_once "../db/database.php";
 
 $sql = "SELECT * FROM generated_quizzes";
 $result = $conn->query($sql);
