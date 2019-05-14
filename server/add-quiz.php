@@ -89,7 +89,7 @@
     
     $digits = 4;
     $code = rand(pow(10, $digits-1), pow(10, $digits)-1);
-    $quiz = json_encode($quizjson);
+    $quiz = json_encode($quizjson, JSON_UNESCAPED_UNICODE);
 
     $sql = "INSERT INTO generated_quizzes (code, quiz) VALUES ('{$code}', '{$quiz}')";
     $conn->query($sql);

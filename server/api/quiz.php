@@ -6,7 +6,7 @@
         header_remove();
         http_response_code(200);
         header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
-        header('Content-Type: application/json');
+        header('Content-Type: application/json;charset=UTF-8');
         header('Status: 200');
         if (!$status) {
             return json_encode($message);
