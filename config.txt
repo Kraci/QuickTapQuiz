@@ -1,0 +1,31 @@
+# Konfigurácia mobilnej a webovej aplikácie
+
+Mobilná aj webová aplikácia sa spolu nachádzajú na `GitHub` v repozitári `QuickTapQuiz` - `https://github.com/Kraci/QuickTapQuiz`. Webová aplikácia sa nachádza v adresári `server`.
+
+## Mobilná aplikácia
+
+Požiadavky:
+
+- Android Studio
+- Android smartphone s verziou 4.4+
+
+Inštalácia:
+
+1. všetky zdrojové súbory okrem priečinka `server` otvoriť v `Android Studio` ako existujúci projekt
+2. v súbore `utils/APIEndpoints.kt` zmeniť konštanty `CODE_GET_REQUEST` a `SERVER_URL` na URL adresy servera, na ktorom beží webová aplikácia
+3. spustiť `build` aplikácie
+4. pripojiť Android zariadenie cez usb a spustiť aplikáciu na danom zariadení alebo nahrať priložený `.apk` súbor na Android zariadenie a spustiť
+
+## Webová aplikácia
+
+Požiadavky: 
+
+- server s PHP7
+- databáza MySQL 5.7
+- otestované na verziách PHP 7.3.1 a MySQL 7.2.14
+
+Inštalácia: 
+
+1. celý obsah priečinka `server` prekopírovať na server
+2. v MySQL spustiť `db/create_script`. Napríklad v phpmyadmin otvoriť sql a nakopírovať celé sql z create_script súboru a vykonať. Vytvorí všetky potrebné tabuľky
+3. upraviť databázové údaje na pripojenie k databázke v súbore `db/database.php`

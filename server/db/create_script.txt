@@ -1,0 +1,74 @@
+CREATE DATABASE IF NOT EXISTS `quicktapquiz` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `quicktapquiz`;
+
+CREATE TABLE `quizzes` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `categories` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `quiz_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `category_question` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL,
+  `question_value` int(11) NOT NULL,
+  `question_bonus` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `generated_quizzes` (
+  `id` int(11) NOT NULL,
+  `code` int(11) NOT NULL,
+  `quiz` json NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+CREATE TABLE `questions` (
+  `id` int(11) NOT NULL,
+  `text` text NOT NULL,
+  `hint` text NOT NULL,
+  `image` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `quiz_id` (`quiz_id`);
+
+ALTER TABLE `category_question`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `question_foreign` (`question_id`),
+  ADD KEY `category_foreign` (`category_id`);
+
+ALTER TABLE `generated_quizzes`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `questions`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `quizzes`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `category_question`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `generated_quizzes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `questions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `quizzes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `categories`
+  ADD CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `category_question`
+  ADD CONSTRAINT `category_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `question_foreign` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

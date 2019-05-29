@@ -43,6 +43,10 @@ class ManageQuizzesActivity : AppCompatActivity() {
                 input.inputType = InputType.TYPE_CLASS_NUMBER
                 dialog.setView(input)
                 dialog.setPositiveButton("OK") { d, _ ->
+                    if (input.text.isEmpty()) {
+                        d.dismiss()
+                        return@setPositiveButton
+                    }
                     val code = input.text.toString().toInt()
                     request(code)
                     d.dismiss()
